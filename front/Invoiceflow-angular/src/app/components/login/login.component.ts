@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService, // Utilise AuthService
     private router: Router // Utilise Router pour la redirection
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
