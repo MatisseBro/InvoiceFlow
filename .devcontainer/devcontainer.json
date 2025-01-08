@@ -8,7 +8,7 @@
     "mariadb",
     "phpmyadmin"
   ],
-  "workspaceFolder": "/workspaces/InvoiceFlow",
+  "workspaceFolder": "/workspaces/invoice_flow",
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
 
