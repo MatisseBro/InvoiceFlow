@@ -46,6 +46,18 @@ class Produits
     #[ORM\OneToMany(targetEntity: ProduitsDevis::class, mappedBy: 'produit')]
     private Collection $produitsDevis;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Type = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Unite = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $tva = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $commentaire = null;
+
     public function __construct()
     {
         $this->produitsFactures = new ArrayCollection();
@@ -185,6 +197,54 @@ class Produits
                 $produitsDevi->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->Type;
+    }
+
+    public function setType(?string $Type): static
+    {
+        $this->Type = $Type;
+
+        return $this;
+    }
+
+    public function getUnite(): ?string
+    {
+        return $this->Unite;
+    }
+
+    public function setUnite(?string $Unite): static
+    {
+        $this->Unite = $Unite;
+
+        return $this;
+    }
+
+    public function getTva(): ?int
+    {
+        return $this->tva;
+    }
+
+    public function setTva(?int $tva): static
+    {
+        $this->tva = $tva;
+
+        return $this;
+    }
+
+    public function getCommentaire(): ?string
+    {
+        return $this->commentaire;
+    }
+
+    public function setCommentaire(?string $commentaire): static
+    {
+        $this->commentaire = $commentaire;
 
         return $this;
     }

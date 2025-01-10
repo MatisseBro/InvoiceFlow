@@ -27,135 +27,138 @@
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="py-3 px-6 text-left rounded-tl-2xl">Nom des produits</th>
-                        <th class="py-3 px-6 text-right">Quantité</th>
-                        <th class="py-3 px-6 text-right">TVA</th>
-                        <th class="py-3 px-6 text-right">Prix HT</th>
-                        <th class="py-3 px-6 text-right">Prix TTC</th>
-                        <th class="py-3 px-6 text-right rounded-tr-2xl">Actions</th>
+                        <th class="py-3 px-6 text-center">Quantité</th>
+                        <th class="py-3 px-6 text-center">TVA</th>
+                        <th class="py-3 px-6 text-center">Prix HT</th>
+                        <th class="py-3 px-6 text-center">Prix TTC</th>
+                        <th class="py-3 px-6 text-center rounded-tr-2xl">Actions</th>
                     </tr>
                 </thead>
                 <!-- Corps du tableau -->
                 <tbody class="bg-white">
-                    <!-- Exemple de lignes intermédiaires -->
-                    <tr class="border-t border-gray-200">
-                        <td class="py-3 px-6 text-left">Exemple de produit</td>
-                        <td class="py-3 px-6 text-right">34</td>
-                        <td class="py-3 px-6 text-right">20%</td>
-                        <td class="py-3 px-6 text-right">200€</td>
-                        <td class="py-3 px-6 text-right">234€</td>
-                        <td class="py-3 px-6 text-right">
-                            <button class="text-blue-600">...</button>
-                        </td>
-                    </tr>
-                    <!-- Dernière ligne avec coins arrondis -->
-                    <tr class="border-t border-gray-200">
-                        <td class="py-3 px-6 text-left rounded-bl-2xl">Dernier produit</td>
-                        <td class="py-3 px-6 text-right">12</td>
-                        <td class="py-3 px-6 text-right">5%</td>
-                        <td class="py-3 px-6 text-right">100€</td>
-                        <td class="py-3 px-6 text-right">105€</td>
-                        <td class="py-3 px-6 text-right rounded-br-2xl">
-                            <button class="text-blue-600">...</button>
+                    <tr *ngFor="let produit of produits" class="border-t border-gray-200">
+                        <td class="py-3 px-6 text-left">{{ produit.nom }}</td>
+                        <td class="py-3 px-6 text-center">{{ produit.quantite }}</td>
+                        <td class="py-3 px-6 text-center">{{ produit.tva }}%</td>
+                        <td class="py-3 px-6 text-center">{{ produit.prixHT }}€</td>
+                        <td class="py-3 px-6 text-center">{{ produit.prixTTC }}€</td>
+                        <td class="py-3 px-6 text-center">
+                            <!-- Bouton Modifier -->
+<button (click)="ouvrirModalEdition(produit.id)"
+class="bg-[#FFE2C7] border border-[#FF9A3B] text-[#FF9A3B] p-2 rounded-md hover:bg-[#FFD5B0] transition mx-1">
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+</svg>
+</button>
+
+                            <!-- Bouton Supprimer -->
+                            <button (click)="deleteProduit(produit.id)" class="bg-[#FDEAE4] border border-[#F45725] text-[#F45725] p-2 rounded-md hover:bg-[#FBC4B4] transition mx-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
-            </table>
+            </table>            
         </div>
 
         <!-- Modal pour ajouter un produit -->
-        <div *ngIf="modalOuvert"
-            class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div
-                class="bg-white w-4/5 md:w-3/5 lg:w-1/2 p-6 rounded-2xl shadow-lg transform transition-all scale-95 animate-modal">
-                <!-- Modale avec animation -->
-                <!-- En-tête du modal -->
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold">Ajouter un produit</h3>
-                    <button (click)="fermerModal()" class="text-black">x</button>
-                </div>
+<div *ngIf="modalOuvert"
+class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+<div class="bg-white w-4/5 md:w-3/5 lg:w-1/2 p-6 rounded-2xl shadow-lg transform transition-all scale-95 animate-modal">
+    <!-- Modale avec animation -->
+    <!-- En-tête du modal -->
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold">{{ edit ? 'Modifier le Produit' : 'Ajouter un Produit' }}</h3>
+        <button (click)="fermerModal()" class="text-black">x</button>
+    </div>
 
-                <!-- Séparateur -->
-                <hr class="mb-4">
+    <!-- Séparateur -->
+    <hr class="mb-4">
 
-                <div class="grid grid-cols-4 gap-4">
-                    <!-- Première ligne : Nom, Type de produit, Unité (Nom prend deux colonnes pour équilibrer) -->
-                    <div class="col-span-2">
-                        <label class="block text-gray-700 text-sm mb-1">Nom</label>
-                        <input formControlName="nom" placeholder="Tee shirt"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-                            type="text">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Type de produit</label>
-                        <input formControlName="type" placeholder="Habit"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-                            type="text">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Unité</label>
-                        <input formControlName="unite" placeholder="Jours"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-                            type="text">
-                    </div>
+    <!-- Début du formulaire -->
+    <form [formGroup]="produitForm">
+        <div class="grid grid-cols-4 gap-4">
+            <!-- Première ligne : Nom, Type de produit, Unité -->
+            <div class="col-span-2">
+                <label class="block text-gray-700 text-sm mb-1">Nom</label>
+                <input formControlName="nom" placeholder="Tee shirt"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    type="text">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm mb-1">Type de produit</label>
+                <input formControlName="type" placeholder="Habit"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    type="text">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm mb-1">Unité</label>
+                <input formControlName="unite" placeholder="Jours"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    type="text">
+            </div>
 
-                    <!-- Deuxième ligne : Prix TTC, Prix HT, TVA, Quantité -->
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Prix TTC</label>
-                        <input formControlName="prixTTC" placeholder="234 €"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-                            type="number">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Prix HT</label>
-                        <input formControlName="prixHT" placeholder="200 €"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-                            type="number">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">TVA</label>
-                        <input formControlName="tva" placeholder="20%"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-                            type="number">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Quantité</label>
-                        <input formControlName="quantite" placeholder="34"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
-                            type="number">
-                    </div>
+            <!-- Deuxième ligne : Prix TTC, Prix HT, TVA, Quantité -->
+            <div>
+                <label class="block text-gray-700 text-sm mb-1">Prix TTC</label>
+                <input formControlName="prixTTC" placeholder="234 €"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    type="number"  min="0">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm mb-1">Prix HT</label>
+                <input formControlName="prixHT" placeholder="200 €"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    type="number"  min="0">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm mb-1">TVA</label>
+                <input formControlName="tva" placeholder="20%"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    type="number"  min="0">
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm mb-1">Quantité</label>
+                <input formControlName="quantite" placeholder="34"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+                    type="number"  min="0">
+            </div>
 
-                    <!-- Troisième ligne : Description -->
-                    <div class="col-span-4">
-                        <label class="block text-gray-700 text-sm mb-1">Description</label>
-                        <textarea formControlName="description" placeholder="Placeholder"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"></textarea>
-                    </div>
+            <!-- Troisième ligne : Description -->
+            <div class="col-span-4">
+                <label class="block text-gray-700 text-sm mb-1">Description</label>
+                <textarea formControlName="description" placeholder="Placeholder"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"></textarea>
+            </div>
 
-                    <!-- Quatrième ligne : Commentaire avec espacement -->
-                    <div class="col-span-4 mb-10">
-                        <label class="block text-gray-700 text-sm mb-1">Commentaire (non visibles)</label>
-                        <textarea formControlName="commentaire" placeholder="Placeholder"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"></textarea>
-                    </div>
-                </div>
-
-                <!-- Séparateur au-dessus des boutons -->
-                <hr class="my-6">
-
-                <!-- Boutons d'action -->
-                <div class="flex justify-between mt-4">
-                    <button type="button" (click)="fermerModal()"
-                        class="w-full px-4 py-2 mr-2 rounded-lg text-[#F45725] bg-[#FDEAE4] font-semibold
-                        hover:bg-[#FBC4B4] transition duration-300">
-                        ANNULER
-                    </button>
-                    <button type="submit"
-                        class="w-full px-4 py-2 ml-2 rounded-lg text-[#4AC99B] bg-[#E9F8F3] font-semibold
-                        hover:bg-[#CDECE0] transition duration-300">
-                        AJOUTER
-                    </button>
-                </div>
+            <!-- Quatrième ligne : Commentaire avec espacement -->
+            <div class="col-span-4 mb-10">
+                <label class="block text-gray-700 text-sm mb-1">Commentaire (non visibles)</label>
+                <textarea formControlName="commentaire" placeholder="Placeholder"
+                    class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"></textarea>
             </div>
         </div>
-    </div>
+
+        <!-- Séparateur au-dessus des boutons -->
+        <hr class="my-6">
+
+        <!-- Boutons d'action -->
+        <div class="flex justify-between mt-4">
+            <button type="button" (click)="fermerModal()"
+                class="w-full px-4 py-2 mr-2 rounded-lg text-[#F45725] bg-[#FDEAE4] font-semibold
+                hover:bg-[#FBC4B4] transition duration-300">
+                ANNULER
+            </button>
+            <button type="button" (click)="edit ? modifierProduit() : ajouterProduit()"
+    class="w-full px-4 py-2 ml-2 rounded-lg text-[#4AC99B] bg-[#E9F8F3] font-semibold hover:bg-[#CDECE0] transition duration-300">
+    {{ edit ? 'MODIFIER' : 'AJOUTER' }}
+</button>
+
+        </div>
+    </form>
 </div>
+</div>
+</div>
+    </div>
