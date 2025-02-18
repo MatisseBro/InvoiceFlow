@@ -1,0 +1,124 @@
+<div class="bg-[#F6F8FC] min-h-screen">
+    <!-- Navbar fixe en haut -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="relative flex h-16 items-center justify-between">
+                <div class="flex flex-1 items-center justify-start">
+                    <div class="flex shrink-0 items-center">
+                        <span class="text-xl font-semibold text-indigo-600">INVOICE FLOW</span>
+                    </div>
+                    <div class="hidden sm:ml-6 sm:block">
+                        <div class="flex space-x-4">
+                            <a href="/dashboard"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900">Dashboard</a>
+                            <a href="/facture"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900">Facture</a>
+                            <a href="/devis"
+                                class="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900">Devis</a>
+                            <a href="/produit"
+                                class="rounded-md bg-blue-500 px-3 py-2 text-sm font-medium text-white">Produits</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute inset-y-0 right-0 flex items-center pr-4">
+                    <button
+                        class="flex items-center space-x-2 rounded-lg bg-[#F80000] px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-red-600 focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="h-5 w-5 text-white">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25-2.25 0 002.25-2.25V15M9 12h12m0 0l-3-3m3 3l-3 3" />
+                        </svg>
+                        <span>Déconnexion</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenu principal -->
+    <div class="h-[calc(100vh-4cm)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-4 pt-16">
+        <!-- Colonne Clients -->
+        <div class="bg-white shadow-md rounded-lg w-1/4 p-4 h-full">
+            <!-- Barre de recherche -->
+            <div class="flex items-center mb-4 relative">
+                <input type="text" placeholder="Rechercher un client..."
+                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 text-sm px-4 py-2">
+                <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="h-5 w-5">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z" />
+                    </svg>
+                </button>
+            </div>
+
+            <h2 class="text-xl font-bold mb-4">Clients</h2>
+
+            <!-- Liste des clients -->
+            <div class="space-y-4">
+                <div class="bg-blue-100 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold">Loïc PAGES</h3>
+                    <p class="text-sm text-gray-600">N°: 000027</p>
+                    <p class="text-sm text-gray-600">12/06/2024</p>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold">Marie CURIE</h3>
+                    <p class="text-sm text-gray-600">N°: 000028</p>
+                    <p class="text-sm text-gray-600">13/06/2024</p>
+                </div>
+                <div class="bg-blue-100 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold">Albert EINSTEIN</h3>
+                    <p class="text-sm text-gray-600">N°: 000029</p>
+                    <p class="text-sm text-gray-600">14/06/2024</p>
+                </div>
+                <div class="bg-gray-100 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold">Isaac NEWTON</h3>
+                    <p class="text-sm text-gray-600">N°: 000030</p>
+                    <p class="text-sm text-gray-600">15/06/2024</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonne Produits -->
+        <div class="bg-white shadow-md rounded-lg flex-1 p-4 h-full">
+            <h2 class="text-xl font-bold mb-4">Produits</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between bg-gray-100 rounded-lg p-4">
+                    <div>
+                        <p class="text-lg font-semibold">Produit 1</p>
+                        <p class="text-sm text-gray-600">Quantité: 5</p>
+                        <p class="text-sm text-gray-600">Description : Un produit de haute qualité</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <p class="text-green-600 font-bold text-lg">€120</p>
+                        <button class="rounded-full bg-blue-500 p-2 text-white hover:bg-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="h-6 w-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between bg-gray-100 rounded-lg p-4">
+                    <div>
+                        <p class="text-lg font-semibold">Produit 2</p>
+                        <p class="text-sm text-gray-600">Quantité: 3</p>
+                        <p class="text-sm text-gray-600">Description : Parfait pour les besoins du quotidien</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <p class="text-green-600 font-bold text-lg">€300</p>
+                        <button class="rounded-full bg-blue-500 p-2 text-white hover:bg-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="h-6 w-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
