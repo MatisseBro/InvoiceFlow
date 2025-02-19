@@ -2,13 +2,23 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource]
+#[ApiResource(
+    operations : [
+        new GetCollection(normalizationContext: ['groups' => ['ListUser']]),
+        new Patch(normalizationContext: ['groups' => ['UpdateUser']]),
+        ]
+)]
+#[Get(normalizationContext: ['groups' => ['GetUser']], security: "is_granted('ROLE_USER')")]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -16,6 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['GetUser', 'ListUser', 'UpdateUser'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
@@ -25,6 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Groups(['GetUser'])]
     private array $roles = [];
 
     /**

@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
       this.authService.login(formValues.email, formValues.password).subscribe({
         next: (response) => {
           console.log('Connexion réussie', response);
+          localStorage.setItem('token', response.token); // Stocke le token dans le local storage
           this.router.navigate(['/']); // Redirige vers la page d'accueil après connexion réussie
         },
         error: (error) => {
