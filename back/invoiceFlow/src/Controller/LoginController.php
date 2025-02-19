@@ -13,9 +13,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LoginController extends AbstractController
 {
-    #[Route('/register', name:"api-register", methods:["POST"])]
+    #[Route('/register', name: "api-register", methods: ["POST"])]
     public function register(
-        Request $request, 
+        Request $request,
         EntityManagerInterface $entityManager
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
@@ -26,17 +26,18 @@ class LoginController extends AbstractController
         }
 
         // Vérification si l'utilisateur existe déjà
-        $existingUser = $entityManager->getRepository(User::class)->findOneBy(['mail' => $data['email']]);
+        $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
         if ($existingUser) {
             return new JsonResponse(['Error' => "User already exists"], JsonResponse::HTTP_CONFLICT);
         }
 
         // Créer une instance de l'utilisateur et définir les champs
         $user = new User();
-        $user->setMail($data['email']);  // Assure-toi que la méthode setMail existe dans l'entité User
+        $user->setEmail($data['email']);  // Assure-toi que la méthode setMail existe dans l'entité User
 
         // Enregistrer le mot de passe en texte brut
-        $user->setMdp($data['password']);  // Assure-toi que la méthode setMdp existe dans l'entité User
+        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+        $user->setPassword($hashedPassword);
 
         try {
             $entityManager->persist($user);
@@ -50,7 +51,7 @@ class LoginController extends AbstractController
     }
 
 
-    #[Route('/login', name:"api-login", methods:["POST"])]
+    #[Route('/login', name: "api-login", methods: ["POST"])]
     public function login(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
