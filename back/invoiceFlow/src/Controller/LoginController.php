@@ -4,16 +4,17 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/api', name: 'app_api_')]
+#[Route('/api', name: 'app_')]
 
 class LoginController extends AbstractController
 {
-    #[Route('/register', name: "api-register", methods: ["POST"])]
+    #[Route('/register', name: "api_register", methods: ["POST"])]
     public function register(
         Request $request,
         EntityManagerInterface $entityManager
@@ -51,21 +52,30 @@ class LoginController extends AbstractController
     }
 
 
-    #[Route('/login', name: "api-login", methods: ["POST"])]
-    public function login(Request $request, EntityManagerInterface $entityManager): JsonResponse
-    {
+    #[Route('/login', name: "api_login", methods: ["POST"])]
+    public function login(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        JWTTokenManagerInterface $JWTManager
+    ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
         if (!isset($data['email'], $data['password'])) {
             return new JsonResponse(['Error' => "Invalid data"], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $user = $entityManager->getRepository(User::class)->findOneBy(['mail' => $data['email']]);
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $data['email']]);
 
-        if (!$user || $user->getMdp() !== $data['password']) { // Comparaison avec le mot de passe brut
+        if (!$user || !password_verify($data['password'], $user->getPassword())) {
             return new JsonResponse(['Error' => "Invalid credentials"], JsonResponse::HTTP_UNAUTHORIZED);
         }
 
-        return new JsonResponse(['id' => $user->getId()], JsonResponse::HTTP_OK);
+        // Génération du token JWT
+        $token = $JWTManager->create($user);
+
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'token' => $token,
+        ], JsonResponse::HTTP_OK);
     }
 }
