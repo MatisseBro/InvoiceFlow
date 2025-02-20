@@ -19,6 +19,7 @@ export class ProduitComponent implements OnInit {
   searchTerm: string = '';
   edit: boolean = false;
   produit: PRODUIT | null = null;
+  submitted: boolean = false;
 
   constructor(
     private produitService: ProduitService,
@@ -38,12 +39,26 @@ export class ProduitComponent implements OnInit {
       type: ['', Validators.required],
       unite: ['', Validators.required],
       prixTTC: [0, Validators.required],
-      prixHT: [0, Validators.required],
+      prixHT: [{ value: 0, disabled: true }, Validators.required], // Désactivé pour empêcher la saisie manuelle
       tva: [20, Validators.required],
       quantite: [0, Validators.required],
       description: [''],
       commentaire: ['']
     });
+  
+    // Mise à jour automatique du prix HT quand Prix TTC ou TVA changent
+    this.produitForm.get('prixTTC')?.valueChanges.subscribe(() => this.calculerPrixHT());
+    this.produitForm.get('tva')?.valueChanges.subscribe(() => this.calculerPrixHT());
+  }
+  
+  calculerPrixHT() {
+    const prixTTC = this.produitForm.get('prixTTC')?.value || 0;
+    const tva = this.produitForm.get('tva')?.value || 0;
+  
+    if (tva > 0) {
+      const prixHT = prixTTC / (1 + tva / 100);
+      this.produitForm.patchValue({ prixHT: prixHT.toFixed(2) });
+    }
   }
 
   loadProduits() {
@@ -59,6 +74,8 @@ export class ProduitComponent implements OnInit {
   }
 
   ajouterProduit() {
+
+    this.submitted = true;
     if (!this.produitForm.valid) return;
 
     const formValues = this.produitForm.getRawValue();
@@ -78,6 +95,8 @@ export class ProduitComponent implements OnInit {
 
   modifierProduit() {
   
+    this.submitted = true;
+
     if (this.produitForm.valid) {
       const produitData = this.produitForm.getRawValue();
       console.log('ID du produit à modifier:', produitData.id);
@@ -111,6 +130,7 @@ export class ProduitComponent implements OnInit {
     this.produitForm.reset();
     this.edit = false; // Désactiver le mode édition
     this.produit = null;
+    this.submitted = false; // Réinitialiser le formulaire
   }
   
 

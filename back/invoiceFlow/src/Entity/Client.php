@@ -61,6 +61,21 @@ class Client
     #[ORM\ManyToOne(inversedBy: 'clients')]
     private ?Entreprise $entreprise = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $referenceClient = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $numeroTva = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $prenom = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
+
     public function __construct()
     {
         $this->facture = new ArrayCollection();
@@ -253,6 +268,66 @@ class Client
     public function setEntreprise(?Entreprise $entreprise): static
     {
         $this->entreprise = $entreprise;
+
+        return $this;
+    }
+
+    public function getReferenceClient(): ?int
+    {
+        return $this->referenceClient;
+    }
+
+    public function setReferenceClient(?int $referenceClient): static
+    {
+        $this->referenceClient = $referenceClient;
+
+        return $this;
+    }
+
+    public function getNumeroTva(): ?int
+    {
+        return $this->numeroTva;
+    }
+
+    public function setNumeroTva(?int $numeroTva): static
+    {
+        $this->numeroTva = $numeroTva;
+
+        return $this;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(?string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(?string $prenom): static
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
 
         return $this;
     }
