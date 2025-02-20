@@ -44,7 +44,7 @@ export class ProduitComponent implements OnInit {
       description: [''],
       commentaire: ['']
     });
-  }
+    }
 
   loadProduits() {
     this.produitService.getProduits().subscribe({

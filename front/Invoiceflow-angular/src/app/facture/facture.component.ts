@@ -1,109 +1,106 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ProduitService } from '../produit/produit.service';
 
 @Component({
-  selector: 'app-facture',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  selector: 'app-facture',
   templateUrl: './facture.component.html',
-  styleUrls: ['./facture.component.scss']
+  styleUrls: ['./facture.component.scss'],
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class FactureComponent implements OnInit {
-  factureForm: FormGroup;
-  currentInvoiceNumber: number = 1; // Commence par 1
+  factureForm!: FormGroup;
+  produits: any[] = [];
+  tauxTVA: number[] = [0, 5, 10, 20];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private produitService: ProduitService) {}
+
+  ngOnInit() {
     this.factureForm = this.fb.group({
-      client: [''],
-      invoiceNumber: [''],
-      paymentInfo: this.fb.group({
-        iban: [''],
-        swift: [''],
-        bankName: ['']
-      }),
-      additionalInfo: this.fb.group({
-        invoiceDate: [''],
-        dueDate: [''],
-        paymentTerms: [''],
-        engagementNumber: [''],
-        serviceCode: [''],
-        creditorReference: ['']
-      }),
-      footerNote: [''],
-      products: this.fb.array([]),
-      subTotal: [0],
-      tax: [0],
-      total: [0]
+      produitsFacture: this.fb.array([]) // Utilisation de FormArray pour stocker les produits
+    });
+
+    // Charger les produits disponibles
+    this.produitService.getProduits().subscribe((data) => {
+      this.produits = data;
     });
   }
 
-  ngOnInit(): void {
-    this.addProduct(); // Ajouter une ligne produit par défaut
-    this.generateInvoiceNumber(); // Générer le numéro de facture
-    this.calculateTotals(); // Initialiser les totaux
+  // Getter pour récupérer le FormArray
+  get produitsFacture(): FormArray {
+    return this.factureForm.get('produitsFacture') as FormArray;
   }
 
-  get products(): FormArray {
-    return this.factureForm.get('products') as FormArray;
+  // 🔥 Nouvelle méthode : Permet d'accéder aux FormGroup sans erreur
+  getProduitFormGroup(index: number): FormGroup {
+    return this.produitsFacture.at(index) as FormGroup;
   }
 
-  addProduct(): void {
-    const productGroup = this.fb.group({
-      productName: [''],
-      quantity: [1],
-      tva: [20],
-      unit: ['Jours'],
-      priceHT: [0],
-      priceTTC: [0],
-      total: [0]
+  // Ajouter un produit sélectionné à la facture
+  ajouterProduit(event: any) {
+    const produitId = event.target.value;
+    const produit = this.produits.find(p => p.id == produitId);
+    if (!produit) return;
+
+    // Ajouter un nouveau produit au FormArray
+    this.produitsFacture.push(this.fb.group({
+      id: produit.id,
+      nom: produit.nom,
+      quantite: 1,
+      prixHT: produit.prixHT,
+      tva: 20,
+      prixTTC: this.arrondir(produit.prixHT * 1.2),
+      total: this.arrondir(produit.prixHT * 1.2)
+    }));
+
+    this.calculerTotal();
+  }
+
+  // Supprimer un produit de la facture
+  supprimerProduit(index: number) {
+    this.produitsFacture.removeAt(index);
+    this.calculerTotal();
+  }
+
+  // Recalculer automatiquement les prix
+  calculerTotal() {
+    this.produitsFacture.controls.forEach(ctrl => {
+      const produitForm = ctrl as FormGroup;
+      const quantite = produitForm.get('quantite')?.value || 1;
+      const prixHT = produitForm.get('prixHT')?.value || 0;
+      const tva = produitForm.get('tva')?.value || 20;
+
+      const prixTTC = this.arrondir(prixHT * (1 + tva / 100));
+      const total = this.arrondir(prixTTC * quantite);
+
+      produitForm.patchValue({ prixTTC, total }, { emitEvent: false });
     });
-    this.products.push(productGroup);
-    this.calculateTotals();
   }
 
-  removeProduct(index: number): void {
-    this.products.removeAt(index);
-    this.calculateTotals();
+  // 🔥 Calcul automatique des totaux dynamiques
+  get sousTotal(): number {
+    return this.arrondir(this.produitsFacture.value.reduce(
+      (acc: number, p: { prixHT: number; quantite: number; }) => acc + (p.prixHT * p.quantite), 0));
   }
 
-  calculateTotals(): void {
-    let subTotal = 0;
-
-    this.products.controls.forEach((product) => {
-      const quantity = product.get('quantity')?.value || 0;
-      const priceHT = product.get('priceHT')?.value || 0;
-      const tva = product.get('tva')?.value || 0;
-
-      const totalHT = quantity * priceHT;
-      const totalTTC = totalHT + (totalHT * tva) / 100;
-
-      product.get('priceTTC')?.setValue(totalTTC.toFixed(2));
-      product.get('total')?.setValue(totalHT.toFixed(2));
-
-      subTotal += totalHT;
-    });
-
-    const tax = subTotal * 0.2; // TVA 20 %
-    const total = subTotal + tax;
-
-    this.factureForm.get('subTotal')?.setValue(subTotal.toFixed(2));
-    this.factureForm.get('tax')?.setValue(tax.toFixed(2));
-    this.factureForm.get('total')?.setValue(total.toFixed(2));
+  get totalTVA(): number {
+    return this.arrondir(this.produitsFacture.value.reduce(
+      (acc: number, p: { prixHT: number; quantite: number; tva: number; }) => acc + ((p.prixHT * p.quantite) * (p.tva / 100)), 0));
   }
 
-  generateInvoiceNumber(): void {
-    this.factureForm.get('invoiceNumber')?.setValue(`N° ${this.currentInvoiceNumber}`);
+  get total(): number {
+    return this.arrondir(this.sousTotal + this.totalTVA);
   }
 
-  onSubmit(): void {
-    console.log('Facture créée :', this.factureForm.value);
-    alert('Facture créée avec succès !');
+  // Arrondir à 2 décimales
+  arrondir(valeur: number): number {
+    return Math.round(valeur * 100) / 100;
+  }
 
-    this.currentInvoiceNumber++; // Incrémenter le numéro de facture
-    this.factureForm.reset(); // Réinitialiser le formulaire
-    this.generateInvoiceNumber(); // Générer le nouveau numéro
-    this.addProduct(); // Ajouter une ligne produit par défaut
+  // Ouvrir la modale pour ajouter un produit
+  ouvrirModalProduit() {
+    console.log('Ouverture du modal pour ajouter un produit');
   }
 }
