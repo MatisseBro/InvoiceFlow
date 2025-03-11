@@ -20,7 +20,6 @@ export class ClientComponent implements OnInit {
   client: CLIENT | null = null;
   submitted: boolean = false;
 
-
   constructor(
     private clientService: ClientService,
     private fb: FormBuilder,
@@ -37,7 +36,7 @@ export class ClientComponent implements OnInit {
     this.clientForm = this.fb.group({
       id: [null],
       typeClient: ['', Validators.required],
-      referenceClient: ['', Validators.required],
+      referenceClient: [{ value: '', disabled: true }],
       nomEntreprise: ['', Validators.required],
       nom: ['', Validators.required],
       prenom: ['', Validators.required],

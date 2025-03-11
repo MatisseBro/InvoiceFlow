@@ -29,7 +29,7 @@ class ClientController extends AbstractController
         $client->setReferenceClient($data['referenceClient']);
         $client->setNomEntreprise($data['nomEntreprise']);
         $client->setSiret($data['numeroSiret']);
-        $client->setNumeroTva($data['numeroTva']);
+        $client->setNumeroTva((int) $data['numeroTva']);
         $client->setNom($data['nom']);
         $client->setPrenom($data['prenom']);
         $client->setEmail($data['email']);
@@ -96,7 +96,7 @@ class ClientController extends AbstractController
         $client->setReferenceClient($data['referenceClient']);
         $client->setNomEntreprise($data['nomEntreprise']);
         $client->setSiret($data['numeroSiret']);
-        $client->setNumeroTva($data['numeroTva']);
+        $client->setNumeroTva((int) $data['numeroTva']);
         $client->setNom($data['nom']);
         $client->setPrenom($data['prenom']);
         $client->setEmail($data['email']);
