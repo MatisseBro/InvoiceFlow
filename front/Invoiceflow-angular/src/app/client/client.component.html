@@ -146,9 +146,8 @@
                         <input formControlName="numeroSiret" placeholder="12345678900012"
                             class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                             [ngClass]="{'border-red-500': submitted && clientForm.controls['numeroSiret'].invalid}"
-                            type="number">
-                        <p *ngIf="submitted && clientForm.controls['numeroSiret'].invalid"
-                            class="text-red-500 text-sm">
+                            type="number" max="14">
+                        <p *ngIf="submitted && clientForm.controls['numeroSiret'].invalid" class="text-red-500 text-sm">
                             Ce champ est obligatoire.
                         </p>
                     </div>
@@ -156,9 +155,9 @@
                         <label class="block text-gray-700 text-sm mb-1">Numéro TVA *</label>
                         <input formControlName="numeroTva" placeholder="FR12345678901"
                             class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['numeroTva'].invalid}" type="text">
-                        <p *ngIf="submitted && clientForm.controls['numeroTva'].invalid"
-                            class="text-red-500 text-sm">
+                            [ngClass]="{'border-red-500': submitted && clientForm.controls['numeroTva'].invalid}"
+                            type="text" maxlength="13">
+                        <p *ngIf="submitted && clientForm.controls['numeroTva'].invalid" class="text-red-500 text-sm">
                             Ce champ est obligatoire.
                         </p>
                     </div>
@@ -180,7 +179,8 @@
                         <label class="block text-gray-700 text-sm mb-1">Prénom *</label>
                         <input formControlName="prenom" placeholder="Melanchon"
                             class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['prenom'].invalid}" type="text">
+                            [ngClass]="{'border-red-500': submitted && clientForm.controls['prenom'].invalid}"
+                            type="text">
                         <p *ngIf="submitted && clientForm.controls['prenom'].invalid" class="text-red-500 text-sm">
                             Ce champ est obligatoire.
                         </p>
@@ -192,7 +192,8 @@
                         <label class="block text-gray-700 text-sm mb-1">E-mail *</label>
                         <input formControlName="email" placeholder="exemple@email.com"
                             class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['email'].invalid}" type="email">
+                            [ngClass]="{'border-red-500': submitted && clientForm.controls['email'].invalid}"
+                            type="email">
                         <p *ngIf="submitted && clientForm.controls['email'].invalid" class="text-red-500 text-sm">
                             Ce champ est obligatoire.
                         </p>
@@ -211,7 +212,8 @@
                         <label class="block text-gray-700 text-sm mb-1">Adresse *</label>
                         <input formControlName="adresse" placeholder="123 Rue de Paris"
                             class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                           [ngClass]="{'border-red-500': submitted && clientForm.controls['adresse'].invalid}" type="text">
+                            [ngClass]="{'border-red-500': submitted && clientForm.controls['adresse'].invalid}"
+                            type="text">
                         <p *ngIf="submitted && clientForm.controls['adresse'].invalid" class="text-red-500 text-sm">
                             Ce champ est obligatoire.
                         </p>
@@ -220,7 +222,8 @@
                         <label class="block text-gray-700 text-sm mb-1">Code postal *</label>
                         <input formControlName="codePostal" placeholder="75001"
                             class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['codePostal'].invalid}" type="number">
+                            [ngClass]="{'border-red-500': submitted && clientForm.controls['codePostal'].invalid}"
+                            type="number">
                         <p *ngIf="submitted && clientForm.controls['codePostal'].invalid" class="text-red-500 text-sm">
                             Ce champ est obligatoire.
                         </p>
@@ -229,7 +232,8 @@
                         <label class="block text-gray-700 text-sm mb-1">Ville *</label>
                         <input formControlName="ville" placeholder="Paris"
                             class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['ville'].invalid}" type="text">
+                            [ngClass]="{'border-red-500': submitted && clientForm.controls['ville'].invalid}"
+                            type="text">
                         <p *ngIf="submitted && clientForm.controls['ville'].invalid" class="text-red-500 text-sm">
                             Ce champ est obligatoire.
                         </p>
@@ -238,7 +242,8 @@
                         <label class="block text-gray-700 text-sm mb-1">Pays *</label>
                         <input formControlName="pays" placeholder="France"
                             class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['pays'].invalid}" type="text">
+                            [ngClass]="{'border-red-500': submitted && clientForm.controls['pays'].invalid}"
+                            type="text">
                         <p *ngIf="submitted && clientForm.controls['pays'].invalid" class="text-red-500 text-sm">
                             Ce champ est obligatoire.
                         </p>
@@ -253,10 +258,11 @@
                         class="w-full px-4 py-2 mr-2 rounded-lg text-[#F45725] bg-[#FDEAE4] font-semibold hover:bg-[#FBC4B4] transition">
                         ANNULER
                     </button>
-                    <button type="button" (click)="submitClient()"
+                    <button type="button" (click)="edit ? modifierClient() : submitClient()"
                         class="w-full px-4 py-2 ml-2 rounded-lg text-[#4AC99B] bg-[#E9F8F3] font-semibold hover:bg-[#CDECE0] transition">
-                        AJOUTER
+                        {{ edit ? 'MODIFIER' : 'AJOUTER' }}
                     </button>
+
                 </div>
             </form>
 
