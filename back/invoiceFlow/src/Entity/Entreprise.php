@@ -15,46 +15,46 @@ class Entreprise
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $nomEntreprise = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $numeroTelephone = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse1 = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $adresse2 = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $codePostal = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $ville = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $pays = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $siret = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $siren = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $iban = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $bic = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $nomBanque = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $swift = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $conditionReglement = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -66,10 +66,19 @@ class Entreprise
     #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'entreprise')]
     private Collection $clients;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'entreprise')]
+    private Collection $users;
+
     public function __construct()
     {
         $this->clients = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
+
+    // -- Getters / Setters --
 
     public function getId(): ?int
     {
@@ -81,10 +90,9 @@ class Entreprise
         return $this->nomEntreprise;
     }
 
-    public function setNomEntreprise(string $nomEntreprise): static
+    public function setNomEntreprise(?string $nomEntreprise): static
     {
         $this->nomEntreprise = $nomEntreprise;
-
         return $this;
     }
 
@@ -93,10 +101,9 @@ class Entreprise
         return $this->numeroTelephone;
     }
 
-    public function setNumeroTelephone(int $numeroTelephone): static
+    public function setNumeroTelephone(?int $numeroTelephone): static
     {
         $this->numeroTelephone = $numeroTelephone;
-
         return $this;
     }
 
@@ -105,10 +112,9 @@ class Entreprise
         return $this->adresse1;
     }
 
-    public function setAdresse1(string $adresse1): static
+    public function setAdresse1(?string $adresse1): static
     {
         $this->adresse1 = $adresse1;
-
         return $this;
     }
 
@@ -120,7 +126,6 @@ class Entreprise
     public function setAdresse2(?string $adresse2): static
     {
         $this->adresse2 = $adresse2;
-
         return $this;
     }
 
@@ -129,10 +134,9 @@ class Entreprise
         return $this->codePostal;
     }
 
-    public function setCodePostal(string $codePostal): static
+    public function setCodePostal(?string $codePostal): static
     {
         $this->codePostal = $codePostal;
-
         return $this;
     }
 
@@ -141,10 +145,9 @@ class Entreprise
         return $this->ville;
     }
 
-    public function setVille(string $ville): static
+    public function setVille(?string $ville): static
     {
         $this->ville = $ville;
-
         return $this;
     }
 
@@ -153,10 +156,9 @@ class Entreprise
         return $this->pays;
     }
 
-    public function setPays(string $pays): static
+    public function setPays(?string $pays): static
     {
         $this->pays = $pays;
-
         return $this;
     }
 
@@ -165,10 +167,9 @@ class Entreprise
         return $this->siret;
     }
 
-    public function setSiret(string $siret): static
+    public function setSiret(?string $siret): static
     {
         $this->siret = $siret;
-
         return $this;
     }
 
@@ -177,10 +178,9 @@ class Entreprise
         return $this->siren;
     }
 
-    public function setSiren(string $siren): static
+    public function setSiren(?string $siren): static
     {
         $this->siren = $siren;
-
         return $this;
     }
 
@@ -189,10 +189,9 @@ class Entreprise
         return $this->iban;
     }
 
-    public function setIban(string $iban): static
+    public function setIban(?string $iban): static
     {
         $this->iban = $iban;
-
         return $this;
     }
 
@@ -201,10 +200,9 @@ class Entreprise
         return $this->bic;
     }
 
-    public function setBic(string $bic): static
+    public function setBic(?string $bic): static
     {
         $this->bic = $bic;
-
         return $this;
     }
 
@@ -213,10 +211,9 @@ class Entreprise
         return $this->nomBanque;
     }
 
-    public function setNomBanque(string $nomBanque): static
+    public function setNomBanque(?string $nomBanque): static
     {
         $this->nomBanque = $nomBanque;
-
         return $this;
     }
 
@@ -225,10 +222,9 @@ class Entreprise
         return $this->swift;
     }
 
-    public function setSwift(string $swift): static
+    public function setSwift(?string $swift): static
     {
         $this->swift = $swift;
-
         return $this;
     }
 
@@ -237,10 +233,9 @@ class Entreprise
         return $this->conditionReglement;
     }
 
-    public function setConditionReglement(string $conditionReglement): static
+    public function setConditionReglement(?string $conditionReglement): static
     {
         $this->conditionReglement = $conditionReglement;
-
         return $this;
     }
 
@@ -252,7 +247,6 @@ class Entreprise
     public function setCommentaireReglement(?string $commentaireReglement): static
     {
         $this->commentaireReglement = $commentaireReglement;
-
         return $this;
     }
 
@@ -270,7 +264,6 @@ class Entreprise
             $this->clients->add($client);
             $client->setEntreprise($this);
         }
-
         return $this;
     }
 
@@ -282,7 +275,34 @@ class Entreprise
                 $client->setEntreprise(null);
             }
         }
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->setEntreprise($this);
+        }
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getEntreprise() === $this) {
+                $user->setEntreprise(null);
+            }
+        }
         return $this;
     }
 }
