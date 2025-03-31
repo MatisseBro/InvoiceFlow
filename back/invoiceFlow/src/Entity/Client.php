@@ -65,7 +65,7 @@ class Client
     private ?int $referenceClient = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $numeroTva = null;
+    private ?string $numeroTva = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom = null;
@@ -284,12 +284,12 @@ class Client
         return $this;
     }
 
-    public function getNumeroTva(): ?int
+    public function getNumeroTva(): ?string
     {
         return $this->numeroTva;
     }
 
-    public function setNumeroTva(?int $numeroTva): static
+    public function setNumeroTva(?string $numeroTva): static
     {
         $this->numeroTva = $numeroTva;
 

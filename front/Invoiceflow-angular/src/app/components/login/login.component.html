@@ -1,45 +1,131 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-      alt="Your Company">
-    <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Connectez-vous à votre
-      compte</h2>
-  </div>
+<div class="min-h-screen bg-[#F6F8FC] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <!-- Logo / Titre -->
+    <div class="text-center mb-6">
+      <img
+        class="mx-auto h-10 w-auto"
+        src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
+        alt="Your Company"
+      >
+      <h2 class="mt-4 text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        Connectez-vous à votre compte
+      </h2>
+    </div>
 
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <div *ngIf="errorMessage" class="mb-4 text-red-600 text-sm text-center">{{ errorMessage }}</div>
-    <form [formGroup]="loginForm" class="space-y-6">
-      <div>
-        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
-        <div class="mt-2">
-          <input id="email" formControlName="email" name="email" type="email" autocomplete="email" required
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        </div>
-      </div>
-
-      <div>
-        <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Mot de passe</label>
-        </div>
-        <div class="mt-2">
-          <input id="password" formControlName="password" name="password" type="password"
-            autocomplete="current-password" required
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-        </div>
+    <!-- Carte (formulaire) -->
+    <div class="bg-white shadow-md rounded-lg p-6">
+      <!-- Message d'erreur -->
+      <div *ngIf="errorMessage" class="mb-4 text-red-600 text-sm text-center">
+        {{ errorMessage }}
       </div>
 
-      <div>
-        <button (click)="login()" type="submit"
-          class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          Connexion
-        </button>
+      <!-- Formulaire -->
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-6">
+        <!-- Champ Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">
+            E-mail
+          </label>
+          <div class="mt-1">
+            <input
+              id="email"
+              formControlName="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 
+                     text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-600 
+                     focus:outline-none focus:ring-1 focus:ring-blue-600 sm:text-sm"
+              placeholder="exemple@domaine.com"
+            >
+          </div>
+        </div>
+
+        <!-- Champ Mot de passe -->
+        <div class="mt-4 relative">
+          <label for="password" class="block text-sm font-medium text-gray-700">
+            Mot de passe
+          </label>
+          
+          <!-- Input avec icône pour afficher/masquer le mot de passe -->
+          <div class="relative mt-1">
+            <!-- Champ mot de passe -->
+            <input
+              id="password"
+              formControlName="password"
+              [type]="showPassword ? 'text' : 'password'"
+              required
+              class="block w-full rounded-lg border border-gray-300 px-3 py-2
+                     shadow-sm focus:border-blue-600 focus:ring-blue-600 sm:text-sm"
+            >
+            
+            <!-- Bouton/icône pour toggler -->
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-500 hover:text-gray-700"
+              tabindex="-1"
+            >
+              <!-- Icône "œil ouvert" si le mot de passe est masqué -->
+              <svg
+                *ngIf="!showPassword"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 12a3 3 0 0 1-6 0 3 3 0 0 1 6 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              
+              <!-- Icône "œil barré" si le mot de passe est affiché -->
+              <svg
+                *ngIf="showPassword"
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M13.875 18.825 12 17.25l-1.875 1.575M12 15.75a3.75 3.75 0 0 1-3.75-3.75 3.75 3.75 0 0 1 3.75-3.75m0 7.5 1.875-1.575L12 10.5l-1.875 1.575m0 0L5.106 7.313M18.894 7.313 12 12l1.875 1.575M2.458 12C3.732 7.943 7.523 5 12 5c1.507 0 2.954.368 4.255 1.02M21.542 12a10.964 10.964 0 0 1-1.452 2.257"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Bouton de connexion -->
+        <div>
+          <button
+            type="submit"
+            class="w-full flex justify-center rounded-lg bg-blue-600 text-white px-4 py-2 text-sm font-semibold 
+                   hover:bg-blue-500 transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600"
+          >
+            Connexion
+          </button>
+        </div>
+      </form>
+
+      <!-- Lien de redirection vers l'inscription -->
+      <div class="text-center mt-4">
+        <a href="/register" class="text-blue-600 hover:underline">
+          Vous n'avez pas de compte ? Inscrivez-vous
+        </a>
       </div>
-      <div class="mt-4">
-        <button (click)="register()" type="button"
-          class="flex w-full justify-center rounded-md bg-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600">
-          Inscription
-        </button>
-      </div>
-    </form>
+    </div>
   </div>
 </div>

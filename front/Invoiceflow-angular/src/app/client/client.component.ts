@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ClientService } from './client.service'; // Service pour gérer les clients
-import { CLIENT } from '../interface/interface'; // Interface Client
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ClientService } from './client.service';
+import { CLIENT } from '../interface/interface';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -11,7 +12,6 @@ import { CLIENT } from '../interface/interface'; // Interface Client
   styleUrls: ['./client.component.css'],
   imports: [CommonModule, ReactiveFormsModule]
 })
-
 export class ClientComponent implements OnInit {
   clients: CLIENT[] = [];
   isModalOpen: boolean = false;
@@ -20,6 +20,8 @@ export class ClientComponent implements OnInit {
   client: CLIENT | null = null;
   submitted: boolean = false;
 
+  // FormControl pour la recherche côté serveur
+  searchControl: FormControl = new FormControl('');
 
   constructor(
     private clientService: ClientService,
@@ -30,6 +32,30 @@ export class ClientComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.loadClients();
+
+    // Abonnement aux changements du champ de recherche
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),          // Attendre 300 ms après la dernière frappe
+      distinctUntilChanged()      // Ne déclencher que si la valeur change réellement
+    ).subscribe(searchTerm => {
+      console.log('[searchControl] Valeur saisie :', searchTerm);
+
+      if (searchTerm && searchTerm.length >= 3) {
+        console.log('[searchControl] >= 3 caractères, on lance searchClients()');
+        this.clientService.searchClients(searchTerm).subscribe({
+          next: (data: CLIENT[]) => {
+            console.log('[searchClients] Résultat :', data);
+            this.clients = data;
+          },
+          error: (error) => {
+            console.error('[searchClients] Erreur lors de la recherche', error);
+          }
+        });
+      } else {
+        console.log('[searchControl] < 3 caractères, on recharge la liste complète');
+        this.loadClients();
+      }
+    });
   }
 
   // Initialisation du formulaire
@@ -37,7 +63,7 @@ export class ClientComponent implements OnInit {
     this.clientForm = this.fb.group({
       id: [null],
       typeClient: ['', Validators.required],
-      referenceClient: ['', Validators.required],
+      referenceClient: [{ value: '', disabled: true }],
       nomEntreprise: ['', Validators.required],
       nom: ['', Validators.required],
       prenom: ['', Validators.required],
@@ -52,15 +78,16 @@ export class ClientComponent implements OnInit {
     });
   }
 
-  // Charger la liste des clients
+  // Charger la liste complète des clients
   loadClients() {
+    console.log('[loadClients] Récupération de tous les clients...');
     this.clientService.getClients().subscribe({
-      next: (data) => {
-        console.log('Clients chargés avec succès', data);
+      next: (data: CLIENT[]) => {
+        console.log('[loadClients] Succès, clients chargés :', data);
         this.clients = data;
       },
       error: (error) => {
-        console.error('Erreur lors du chargement des clients', error);
+        console.error('[loadClients] Erreur lors du chargement des clients', error);
       }
     });
   }
@@ -70,7 +97,6 @@ export class ClientComponent implements OnInit {
     this.isModalOpen = true;
     this.edit = false;
     this.client = null;
-  
     this.clientForm.patchValue({
       referenceClient: this.getNextReference()
     });
@@ -84,37 +110,39 @@ export class ClientComponent implements OnInit {
     this.client = null;
   }
 
- // Ajouter un client
-submitClient() {
-  this.submitted = true; // Active l'affichage des erreurs
-
-  if (this.clientForm.invalid) {
-    this.clientForm.markAllAsTouched(); // Marque tous les champs invalides
-    return;
-  }
-
-  const formValues = this.clientForm.getRawValue();
-
-  this.clientService.addClient(formValues).subscribe({
-    next: (clientAjoute) => {
-      console.log('Client ajouté avec succès');
-      this.clients = [...this.clients, clientAjoute];
-      this.closeModal();
-      this.loadClients();
-      this.submitted = false; // Réinitialise après l'ajout réussi
-    },
-    error: (error) => {
-      console.error("Erreur lors de l'ajout du client", error);
+  // Ajouter un client
+  submitClient() {
+    this.submitted = true;
+    if (this.clientForm.invalid) {
+      this.clientForm.markAllAsTouched();
+      return;
     }
-  });
-}
 
+    const formValues = this.clientForm.getRawValue();
+    console.log('[submitClient] Formulaire valide, envoi :', formValues);
+
+    this.clientService.addClient(formValues).subscribe({
+      next: (clientAjoute: CLIENT) => {
+        console.log('[submitClient] Client ajouté avec succès :', clientAjoute);
+        // Optionnel : mettre à jour la liste locale
+        this.clients = [...this.clients, clientAjoute];
+        this.closeModal();
+        this.loadClients();
+        this.submitted = false;
+      },
+      error: (error) => {
+        console.error("[submitClient] Erreur lors de l'ajout du client", error);
+      }
+    });
+  }
 
   // Ouvrir la modale en mode édition
   ouvrirModalEdition(id: number): void {
+    console.log('[ouvrirModalEdition] Chargement client ID =', id);
     this.clientService.getClientById(id).subscribe({
-      next: (client) => {
+      next: (client: CLIENT) => {
         if (client) {
+          console.log('[ouvrirModalEdition] Client récupéré :', client);
           this.clientForm.patchValue(client);
           this.edit = true;
           this.client = client;
@@ -122,7 +150,7 @@ submitClient() {
         }
       },
       error: (error) => {
-        console.error('Erreur lors du chargement du client', error);
+        console.error('[ouvrirModalEdition] Erreur lors du chargement du client', error);
       }
     });
   }
@@ -130,15 +158,17 @@ submitClient() {
   // Modifier un client
   modifierClient() {
     if (!this.clientForm.valid) return;
-
     const clientData = this.clientForm.getRawValue();
+    console.log('[modifierClient] Envoi des données :', clientData);
+
     this.clientService.editClient(clientData).subscribe({
       next: () => {
+        console.log('[modifierClient] Modification réussie');
         this.closeModal();
         this.loadClients();
       },
       error: (err) => {
-        console.error('Erreur lors de la modification du client', err);
+        console.error('[modifierClient] Erreur lors de la modification du client', err);
       }
     });
   }
@@ -146,12 +176,14 @@ submitClient() {
   // Supprimer un client
   deleteClient(id: number): void {
     if (confirm('Voulez-vous vraiment supprimer ce client ?')) {
+      console.log('[deleteClient] Suppression du client ID =', id);
       this.clientService.deleteClient(id).subscribe({
         next: () => {
+          console.log('[deleteClient] Suppression réussie');
           this.loadClients();
         },
         error: (err) => {
-          console.error('Erreur lors de la suppression du client', err);
+          console.error('[deleteClient] Erreur lors de la suppression du client', err);
         }
       });
     }
@@ -164,5 +196,4 @@ submitClient() {
   getNextReference(): number {
     return this.clients.length + 1;
   }
-  
 }
