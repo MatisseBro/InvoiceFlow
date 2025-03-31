@@ -22,11 +22,12 @@ class Produits
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?int $prixTTC = null;
+    // Utilisation du type float pour les prix
+    #[ORM\Column(type: 'float')]
+    private ?float $prixTTC = null;
 
-    #[ORM\Column]
-    private ?int $prixHT = null;
+    #[ORM\Column(type: 'float')]
+    private ?float $prixHT = null;
 
     #[ORM\Column]
     private ?int $quantiteStock = null;
@@ -52,11 +53,15 @@ class Produits
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Unite = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $tva = null;
+    // Utilisation du type float pour la TVA, nullable si nécessaire
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $tva = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentaire = null;
+
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    private ?Entreprise $entreprise = null;
 
     public function __construct()
     {
@@ -77,7 +82,6 @@ class Produits
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -89,31 +93,28 @@ class Produits
     public function setDescription(?string $description): static
     {
         $this->description = $description;
-
         return $this;
     }
 
-    public function getPrixTTC(): ?int
+    public function getPrixTTC(): ?float
     {
         return $this->prixTTC;
     }
 
-    public function setPrixTTC(int $prixTTC): static
+    public function setPrixTTC(float $prixTTC): static
     {
         $this->prixTTC = $prixTTC;
-
         return $this;
     }
 
-    public function getPrixHT(): ?int
+    public function getPrixHT(): ?float
     {
         return $this->prixHT;
     }
 
-    public function setPrixHT(int $prixHT): static
+    public function setPrixHT(float $prixHT): static
     {
         $this->prixHT = $prixHT;
-
         return $this;
     }
 
@@ -125,7 +126,6 @@ class Produits
     public function setQuantiteStock(int $quantiteStock): static
     {
         $this->quantiteStock = $quantiteStock;
-
         return $this;
     }
 
@@ -137,7 +137,6 @@ class Produits
     public function setDateCreation(\DateTimeInterface $dateCreation): static
     {
         $this->dateCreation = $dateCreation;
-
         return $this;
     }
 
@@ -155,19 +154,16 @@ class Produits
             $this->produitsFactures->add($produitsFacture);
             $produitsFacture->setProduit($this);
         }
-
         return $this;
     }
 
     public function removeProduitsFacture(ProduitsFacture $produitsFacture): static
     {
         if ($this->produitsFactures->removeElement($produitsFacture)) {
-            // set the owning side to null (unless already changed)
             if ($produitsFacture->getProduit() === $this) {
                 $produitsFacture->setProduit(null);
             }
         }
-
         return $this;
     }
 
@@ -185,19 +181,16 @@ class Produits
             $this->produitsDevis->add($produitsDevi);
             $produitsDevi->setProduit($this);
         }
-
         return $this;
     }
 
     public function removeProduitsDevi(ProduitsDevis $produitsDevi): static
     {
         if ($this->produitsDevis->removeElement($produitsDevi)) {
-            // set the owning side to null (unless already changed)
             if ($produitsDevi->getProduit() === $this) {
                 $produitsDevi->setProduit(null);
             }
         }
-
         return $this;
     }
 
@@ -209,7 +202,6 @@ class Produits
     public function setType(?string $Type): static
     {
         $this->Type = $Type;
-
         return $this;
     }
 
@@ -221,19 +213,17 @@ class Produits
     public function setUnite(?string $Unite): static
     {
         $this->Unite = $Unite;
-
         return $this;
     }
 
-    public function getTva(): ?int
+    public function getTva(): ?float
     {
         return $this->tva;
     }
 
-    public function setTva(?int $tva): static
+    public function setTva(?float $tva): static
     {
         $this->tva = $tva;
-
         return $this;
     }
 
@@ -245,7 +235,17 @@ class Produits
     public function setCommentaire(?string $commentaire): static
     {
         $this->commentaire = $commentaire;
+        return $this;
+    }
 
+    public function getEntreprise(): ?Entreprise
+    {
+        return $this->entreprise;
+    }
+
+    public function setEntreprise(?Entreprise $entreprise): static
+    {
+        $this->entreprise = $entreprise;
         return $this;
     }
 }

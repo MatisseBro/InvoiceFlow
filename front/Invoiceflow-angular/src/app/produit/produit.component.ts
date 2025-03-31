@@ -1,9 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProduitService } from './produit.service';
 import { PRODUIT } from '../interface/interface';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -16,7 +16,8 @@ export class ProduitComponent implements OnInit {
   produits: PRODUIT[] = [];
   modalOuvert = false;
   produitForm!: FormGroup;
-  searchTerm: string = '';
+  // Utilisation d'un FormControl pour la recherche dynamique
+  searchControl: FormControl = new FormControl('');
   edit: boolean = false;
   produit: PRODUIT | null = null;
   submitted: boolean = false;
@@ -30,6 +31,29 @@ export class ProduitComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.loadProduits();
+
+    // Abonnement aux changements du champ de recherche
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),          // Attendre 300 ms après la dernière frappe
+      distinctUntilChanged()      // Ne déclencher que si la valeur change réellement
+    ).subscribe((searchTerm: string) => {
+      console.log('[searchControl] Valeur saisie:', searchTerm);
+      if (searchTerm && searchTerm.length >= 3) {
+        // Appel de la recherche côté serveur
+        this.produitService.searchProduits(searchTerm).subscribe({
+          next: (data: PRODUIT[]) => {
+            console.log('[searchProduits] Résultat:', data);
+            this.produits = data;
+          },
+          error: (error) => {
+            console.error('[searchProduits] Erreur lors de la recherche:', error);
+          }
+        });
+      } else {
+        console.log('[searchControl] Moins de 3 caractères, rechargement complet.');
+        this.loadProduits();
+      }
+    });
   }
 
   initForm() {
@@ -39,106 +63,87 @@ export class ProduitComponent implements OnInit {
       type: ['', Validators.required],
       unite: ['', Validators.required],
       prixTTC: [0, Validators.required],
-      prixHT: [{ value: 0, disabled: true }, Validators.required], // Désactivé pour empêcher la saisie manuelle
+      prixHT: [{ value: 0, disabled: true }, Validators.required],
       tva: [20, Validators.required],
       quantite: [0, Validators.required],
       description: [''],
       commentaire: ['']
     });
-  
-    // Mise à jour automatique du prix HT quand Prix TTC ou TVA changent
+
+    // Mise à jour automatique du prix HT quand le prix TTC ou la TVA changent
     this.produitForm.get('prixTTC')?.valueChanges.subscribe(() => this.calculerPrixHT());
     this.produitForm.get('tva')?.valueChanges.subscribe(() => this.calculerPrixHT());
   }
-  
+
   calculerPrixHT() {
     const prixTTC = this.produitForm.get('prixTTC')?.value || 0;
     const tva = this.produitForm.get('tva')?.value || 0;
-  
     if (tva > 0) {
       const prixHT = prixTTC / (1 + tva / 100);
-      this.produitForm.patchValue({ prixHT: prixHT.toFixed(2) });
+      // Mise à jour du champ en conservant deux décimales
+      this.produitForm.patchValue({ prixHT: parseFloat(prixHT.toFixed(2)) });
     }
   }
 
   loadProduits() {
+    console.log('[loadProduits] Chargement des produits...');
     this.produitService.getProduits().subscribe({
-      next: (data) => {
-        console.log('Produits chargés avec succès', data);
+      next: (data: PRODUIT[]) => {
+        console.log('[loadProduits] Produits chargés:', data);
         this.produits = data;
       },
       error: (error) => {
-        console.error('Erreur lors du chargement des produits', error);
+        console.error('[loadProduits] Erreur lors du chargement des produits:', error);
       }
     });
   }
 
   ajouterProduit() {
-
     this.submitted = true;
     if (!this.produitForm.valid) return;
 
     const formValues = this.produitForm.getRawValue();
+    console.log('[ajouterProduit] Envoi du produit:', formValues);
 
     this.produitService.addProduit(formValues).subscribe({
-      next: (produitAjoute) => {
-        console.log('Produit ajouté avec succès');
+      next: (produitAjoute: PRODUIT) => {
+        console.log('[ajouterProduit] Produit ajouté avec succès:', produitAjoute);
         this.produits = [...this.produits, produitAjoute];
         this.fermerModal();
         this.loadProduits();
       },
       error: (error) => {
-        console.error("Erreur lors de l'ajout du produit", error);
+        console.error("[ajouterProduit] Erreur lors de l'ajout du produit:", error);
       }
     });
   }
 
   modifierProduit() {
-  
     this.submitted = true;
-
-    if (this.produitForm.valid) {
-      const produitData = this.produitForm.getRawValue();
-      console.log('ID du produit à modifier:', produitData.id);
-  
-      this.produitService.editProduit(produitData).subscribe({
-        next: () => {
-          this.fermerModal(); // Ferme le modal après modification réussie
-          this.loadProduits(); // Recharge la liste des produits
-        },
-        error: (err) => { 
-          console.error('Erreur lors de la modification du produit', err);
-        }
-      });
-    } else {
+    if (!this.produitForm.valid) {
       alert('Le formulaire est invalide.');
+      return;
     }
-  }
-  
-  produitsFiltres(): PRODUIT[] {
-    return this.produits.filter(produit =>
-      produit.nom.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
+    const produitData = this.produitForm.getRawValue();
+    console.log('[modifierProduit] Envoi des données pour le produit ID:', produitData.id);
 
-  ouvrirModal(): void {
-    this.modalOuvert = true;
+    this.produitService.editProduit(produitData).subscribe({
+      next: () => {
+        console.log('[modifierProduit] Produit modifié avec succès');
+        this.fermerModal();
+        this.loadProduits();
+      },
+      error: (err) => {
+        console.error('[modifierProduit] Erreur lors de la modification du produit:', err);
+      }
+    });
   }
-
-  fermerModal(): void {
-    this.modalOuvert = false;
-    this.produitForm.reset();
-    this.edit = false; // Désactiver le mode édition
-    this.produit = null;
-    this.submitted = false; // Réinitialiser le formulaire
-  }
-  
 
   ouvrirModalEdition(id: number): void {
+    console.log('[ouvrirModalEdition] Chargement du produit ID:', id);
     this.produitService.getProduitById(id).subscribe({
-      next: (produit) => {
+      next: (produit: PRODUIT) => {
         if (produit) {
-          // Remplir le formulaire avec les valeurs du produit chargé
           this.produitForm.patchValue({
             id: produit.id,
             nom: produit.nom,
@@ -151,30 +156,42 @@ export class ProduitComponent implements OnInit {
             description: produit.description,
             commentaire: produit.commentaire
           });
-  
-          // Activer le mode édition
           this.edit = true;
           this.produit = produit;
           this.modalOuvert = true;
+          console.log('[ouvrirModalEdition] Produit chargé:', produit);
         }
       },
       error: (error) => {
-        console.error('Erreur lors du chargement du produit', error);
+        console.error('[ouvrirModalEdition] Erreur lors du chargement du produit:', error);
       }
     });
   }
-  
-deleteProduit(id: number): void {
+
+  deleteProduit(id: number): void {
     if (confirm('Voulez-vous vraiment supprimer ce produit ?')) {
+      console.log('[deleteProduit] Suppression du produit ID:', id);
       this.produitService.deleteProduit(id).subscribe({
         next: () => {
+          console.log('[deleteProduit] Produit supprimé');
           this.loadProduits();
         },
         error: (err) => {
-          console.error('Erreur lors de la suppression du produit', err);
+          console.error('[deleteProduit] Erreur lors de la suppression du produit:', err);
         }
       });
     }
   }
 
+  ouvrirModal(): void {
+    this.modalOuvert = true;
+  }
+
+  fermerModal(): void {
+    this.modalOuvert = false;
+    this.produitForm.reset();
+    this.edit = false;
+    this.produit = null;
+    this.submitted = false;
+  }
 }

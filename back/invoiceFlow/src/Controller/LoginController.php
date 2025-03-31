@@ -56,7 +56,7 @@ class LoginController extends AbstractController
         $user->setRoles(['ROLE_ADMIN']);
     
         // Hashage du mot de passe
-        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+        $hashedPassword = password_hash($data['password'], \PASSWORD_DEFAULT);
         $user->setPassword($hashedPassword);
     
         // Association de l'utilisateur à l'entreprise

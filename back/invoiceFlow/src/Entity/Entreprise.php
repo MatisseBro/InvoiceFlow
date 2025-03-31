@@ -72,10 +72,17 @@ class Entreprise
     #[ORM\OneToMany(targetEntity: User::class, mappedBy: 'entreprise')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, Produits>
+     */
+    #[ORM\OneToMany(targetEntity: Produits::class, mappedBy: 'entreprise')]
+    private Collection $produits;
+
     public function __construct()
     {
         $this->clients = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->produits = new ArrayCollection();
     }
 
     // -- Getters / Setters --
@@ -303,6 +310,36 @@ class Entreprise
                 $user->setEntreprise(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Produits>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produits $produit): static
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setEntreprise($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produits $produit): static
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getEntreprise() === $this) {
+                $produit->setEntreprise(null);
+            }
+        }
+
         return $this;
     }
 }

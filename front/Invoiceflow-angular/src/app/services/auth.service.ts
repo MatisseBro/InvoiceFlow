@@ -1,7 +1,7 @@
 // src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,40 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login_check`, { username: email, password: password });
+  // La méthode login récupère le token et le stocke dans le localStorage
+  login(email: string, password: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login_check`, { username: email, password: password })
+      .pipe(
+        tap(response => {
+          // Stocker le token dans le localStorage
+          localStorage.setItem('auth_token', response.token);
+        })
+      );
   }
 
-  register(email: string, password: string, nom: any, prenom: any, nomEntreprise: any, telephone: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { email, password, nom, prenom, nomEntreprise, telephone });
+  // Méthode d'enregistrement (register)
+  register(email: string, password: string, nom: string, prenom: string, nomEntreprise: string, telephone: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/register`, { email, password, nom, prenom, nomEntreprise, telephone })
+      .pipe(
+        tap(response => {
+          // Stocker le token renvoyé lors de l'inscription dans le localStorage
+          localStorage.setItem('auth_token', response.token);
+        })
+      );
+  }
+
+  // Méthode pour récupérer le token depuis le localStorage
+  getToken(): string | null {
+    return localStorage.getItem('auth_token');
+  }
+
+  // Méthode pour vérifier si l'utilisateur est connecté
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  // Méthode pour déconnecter l'utilisateur (logout)
+  logout(): void {
+    localStorage.removeItem('auth_token');
   }
 }

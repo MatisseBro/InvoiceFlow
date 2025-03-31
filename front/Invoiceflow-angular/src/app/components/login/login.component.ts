@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
 
   loginForm!: FormGroup;
   errorMessage: string | null = null; // Message d'erreur
+  showPassword!: boolean;
+  
 
   constructor(
     private fb: FormBuilder,
@@ -33,6 +35,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  
   // Méthode pour la connexion
   login(): void {
     if (this.loginForm.valid) {

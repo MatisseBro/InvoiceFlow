@@ -12,15 +12,35 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/api', name: 'app_api_')]
 class ClientController extends AbstractController
 {
-    #[Route('/client', name:"api_client", methods:["POST"])]
+    #[Route('/client', name: "api_client", methods: ["POST"])]
     public function ajouterClient(
         Request $request,
         EntityManagerInterface $entityManager
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['typeClient'], $data['referenceClient'], $data['nomEntreprise'], $data['numeroSiret'], $data['numeroTva'], 
-        $data['nom'], $data['prenom'], $data['email'], $data['telephone'], $data['adresse'], $data['ville'], $data['codePostal'], $data['pays'])) {
+        /** @var App\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+
+        if (!$currentUser || !$currentUser->getEntreprise()) {
+            return new JsonResponse(['Error' => 'Utilisateur non authentifié ou entreprise introuvable'], JsonResponse::HTTP_UNAUTHORIZED);
+        };
+
+        if (!isset(
+            $data['typeClient'],
+            $data['referenceClient'],
+            $data['nomEntreprise'],
+            $data['numeroSiret'],
+            $data['numeroTva'],
+            $data['nom'],
+            $data['prenom'],
+            $data['email'],
+            $data['telephone'],
+            $data['adresse'],
+            $data['ville'],
+            $data['codePostal'],
+            $data['pays']
+        )) {
             return new JsonResponse(['message' => 'Données incomplètes'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
@@ -38,6 +58,7 @@ class ClientController extends AbstractController
         $client->setVille($data['ville']);
         $client->setCodePostal($data['codePostal']);
         $client->setPays($data['pays']);
+        $client->setEntreprise($currentUser->getEntreprise());
 
         $entityManager->persist($client);
         $entityManager->flush();
@@ -46,14 +67,39 @@ class ClientController extends AbstractController
     }
 
     #[Route('/clients', name: "get_clients", methods: ["GET"])]
-    public function getClients(EntityManagerInterface $entityManager): JsonResponse
+    public function getClients(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
-        $clients = $entityManager->getRepository(Client::class)->findAll();
+        /** @var App\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+
+        if (!$currentUser || !$currentUser->getEntreprise()) {
+            return new JsonResponse(
+                ['Error' => 'Utilisateur non authentifié ou entreprise introuvable'],
+                JsonResponse::HTTP_UNAUTHORIZED
+            );
+        }
+
+        // Récupération du paramètre de recherche
+        $search = $request->query->get('search', '');
+
+        // Création d'un QueryBuilder pour filtrer par entreprise
+        $repository = $entityManager->getRepository(Client::class);
+        $qb = $repository->createQueryBuilder('c')
+            ->where('c.entreprise = :entreprise')
+            ->setParameter('entreprise', $currentUser->getEntreprise());
+
+        // Si la chaîne de recherche a au moins 3 caractères, ajouter le filtre sur le nom ou le prénom
+        if (strlen($search) >= 2) {
+            $qb->andWhere('LOWER(c.nomEntreprise) LIKE :search')
+                ->setParameter('search', '%' . strtolower($search) . '%');
+        }
+
+        $clients = $qb->getQuery()->getResult();
 
         $data = [];
         foreach ($clients as $client) {
             $data[] = [
-                'id' => $client->getId(),
+                'id'  => $client->getId(),
                 'typeClient' => $client->getTypeClient(),
                 'referenceClient' => $client->getReferenceClient(),
                 'nomEntreprise' => $client->getNomEntreprise(),
@@ -66,7 +112,7 @@ class ClientController extends AbstractController
                 'adresse' => $client->getAdresse1(),
                 'ville' => $client->getVille(),
                 'codePostal' => $client->getCodePostal(),
-                'pays' => $client->getPays(),
+                'pays'=> $client->getPays(),
             ];
         }
 
@@ -81,8 +127,28 @@ class ClientController extends AbstractController
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
 
-        if (!isset($data['typeClient'], $data['referenceClient'], $data['nomEntreprise'], $data['numeroSiret'], $data['numeroTva'], 
-        $data['nom'], $data['prenom'], $data['email'], $data['telephone'], $data['adresse'], $data['ville'], $data['codePostal'], $data['pays'])) {
+        /** @var App\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+
+        if (!$currentUser || !$currentUser->getEntreprise()) {
+            return new JsonResponse(['Error' => 'Utilisateur non authentifié ou entreprise introuvable'], JsonResponse::HTTP_UNAUTHORIZED);
+        };
+
+        if (!isset(
+            $data['typeClient'],
+            $data['referenceClient'],
+            $data['nomEntreprise'],
+            $data['numeroSiret'],
+            $data['numeroTva'],
+            $data['nom'],
+            $data['prenom'],
+            $data['email'],
+            $data['telephone'],
+            $data['adresse'],
+            $data['ville'],
+            $data['codePostal'],
+            $data['pays']
+        )) {
             return new JsonResponse(['message' => 'Données incomplètes'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
@@ -113,7 +179,17 @@ class ClientController extends AbstractController
     }
 
     #[Route('/client/{id}', name: "get_client", methods: ["GET"])]
-    public function getClient(int $id, EntityManagerInterface $entityManager): JsonResponse {
+    public function getClient(int $id, EntityManagerInterface $entityManager): JsonResponse
+    {
+
+        /** @var App\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+
+        if (!$currentUser || !$currentUser->getEntreprise()) {
+            return new JsonResponse(['Error' => 'Utilisateur non authentifié ou entreprise introuvable'], JsonResponse::HTTP_UNAUTHORIZED);
+        };
+
+
         $client = $entityManager->getRepository(Client::class)->find($id);
 
         if (!$client) {
@@ -141,7 +217,8 @@ class ClientController extends AbstractController
     }
 
     #[Route('/delete-client/{id}', name: "delete_client", methods: ["DELETE"])]
-    public function deleteClient(int $id, EntityManagerInterface $entityManager): JsonResponse {
+    public function deleteClient(int $id, EntityManagerInterface $entityManager): JsonResponse
+    {
         $client = $entityManager->getRepository(Client::class)->find($id);
 
         if (!$client) {

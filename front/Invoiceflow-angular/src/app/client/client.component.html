@@ -1,270 +1,258 @@
 <div class="bg-[#F6F8FC] min-h-screen">
-    <div class="h-[calc(100vh-4cm)] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-4 pt-16">
-        <!-- Colonne Clients -->
-        <div class="bg-white shadow-md rounded-lg w-1/4 p-4 h-full">
-            <!-- Barre de recherche -->
-            <div class="flex items-center mb-4 relative">
-                <input type="text" placeholder="Rechercher un client..."
-                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 text-sm px-4 py-2">
-                <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="h-5 w-5">
+    <!-- Conteneur principal avec padding vertical -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-4 pt-16">
+        
+        <div class="bg-white shadow-md rounded-lg w-full p-4 h-full">
+            <button (click)="openFormAddClient()"
+            type="button"
+            class="w-full md:w-auto bg-[#2388FF] text-white px-4 py-2 rounded-lg transition duration-200 hover:bg-[#4AA3FF]">
+      AJOUTER UN CLIENT
+    </button>
+        </div>
+    </div>
+        <div class="bg-[#F6F8FC] min-h-screen">
+            <!-- Conteneur principal -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
+              <div class="flex flex-col md:flex-row gap-4">
+                
+                <!-- Colonne Clients -->
+                <div class="bg-white shadow-md rounded-lg p-4 w-full md:w-1/3">
+                  <!-- Barre de recherche Clients -->
+                  <div class="flex items-center mb-4 relative">
+                    <input type="text" placeholder="Rechercher un client..."
+                           [formControl]="searchControl"
+                           class="w-full rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 text-sm px-4 py-2">
+                    <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                           stroke="currentColor" class="h-5 w-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z" />
-                    </svg>
-                </button>
-            </div>
-
-            <h2 class="text-xl font-bold mb-4">Clients</h2>
-
-            <!-- Liste des clients -->
-            <div class="space-y-4">
-                <div *ngFor="let client of clients; trackBy: trackById"
-                    class="bg-gray-100 rounded-lg p-4 flex justify-between items-center">
-                    <div>
+                              d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z" />
+                      </svg>
+                    </button>
+                  </div>
+                  <h2 class="text-xl font-bold mb-4">Clients</h2>
+                  <!-- Affichage de la liste des clients -->
+                  <div class="space-y-4">
+                    <div *ngFor="let client of clients; trackBy: trackById"
+                         class="bg-gray-100 rounded-lg p-4 flex flex-col md:flex-row justify-between items-center">
+                      <div class="mb-2 md:mb-0">
                         <h3 class="text-lg font-semibold">{{ client.nom }} {{ client.prenom }}</h3>
                         <p class="text-sm text-gray-600"><strong>Entreprise:</strong> {{ client.nomEntreprise }}</p>
                         <p class="text-sm text-gray-600"><strong>Téléphone:</strong> {{ client.telephone }}</p>
                         <p class="text-sm text-gray-600"><strong>Email:</strong> {{ client.email }}</p>
-                    </div>
-                    <div class="flex flex-col space-y-2">
+                      </div>
+                      <div class="flex space-x-2">
                         <!-- Bouton Modifier -->
-                        <button (click)="ouvrirModalEdition(client.id)"
-                            class="bg-[#FFE2C7] border border-[#FF9A3B] text-[#FF9A3B] p-2 rounded-md hover:bg-[#FFD5B0] transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                            </svg>
+                        <button (click)="ouvrirModalEdition(client.id)" type="button"
+                                class="bg-[#FFE2C7] border border-[#FF9A3B] text-[#FF9A3B] p-2 rounded-md hover:bg-[#FFD5B0] transition">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                               stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                          </svg>
                         </button>
-
                         <!-- Bouton Supprimer -->
-                        <button (click)="deleteClient(client.id)"
-                            class="bg-[#FDEAE4] border border-[#F45725] text-[#F45725] p-2 rounded-md hover:bg-[#FBC4B4] transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
+                        <button (click)="deleteClient(client.id)" type="button"
+                                class="bg-[#FDEAE4] border border-[#F45725] text-[#F45725] p-2 rounded-md hover:bg-[#FBC4B4] transition">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                               stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                          </svg>
                         </button>
+                      </div>
                     </div>
+                  </div>
                 </div>
-            </div>
-        </div>
-
+  
         <!-- Colonne Produits -->
-        <div class="bg-white shadow-md rounded-lg flex-1 p-4 h-full">
-            <h2 class="text-xl font-bold mb-4">Produits</h2>
-            <div class="space-y-4">
-                <div class="flex items-center justify-between bg-gray-100 rounded-lg p-4">
-                    <div>
-                        <p class="text-lg font-semibold">Produit 1</p>
-                        <p class="text-sm text-gray-600">Quantité: 5</p>
-                        <p class="text-sm text-gray-600">Description : Un produit de haute qualité</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <p class="text-green-600 font-bold text-lg">€120</p>
-                        <button class="rounded-full bg-blue-500 p-2 text-white hover:bg-blue-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="h-6 w-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+        <div class="bg-white shadow-md rounded-lg p-4 w-full md:w-2/3">
+          <!-- Ligne supérieure : titre, barre de recherche et bouton -->
+          <div class="flex flex-col md:flex-row items-center justify-between mb-4 gap-4">
+            <h2 class="text-xl font-bold">Produits</h2>
+            <!-- Barre de recherche Produits -->
+            <div class="relative w-full md:w-auto">
+              <input type="text" placeholder="Rechercher ..." class="w-full rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-200 text-sm px-4 py-2">
+              <button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="h-5 w-5">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-4.35-4.35M16.5 10.5a6 6 0 11-12 0 6 6 0 0112 0z" />
+                </svg>
+              </button>
             </div>
-        </div>
-
-        <!-- Bouton pour ouvrir la modale -->
-        <button (click)="openFormAddClient()"
-            class="bg-[#2388FF] text-white px-4 py-2 rounded-lg transition duration-200 hover:bg-[#4AA3FF]">
-            AJOUTER UN CLIENT
-        </button>
-    </div>
-
+        
+  
+    <!-- Modal d'ajout/édition de client -->
     <div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white w-11/12 md:w-4/5 lg:w-3/5 p-6 rounded-2xl shadow-lg max-h-[80vh] overflow-y-auto">
-
-            <!-- En-tête de la modale -->
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-semibold">{{ edit ? 'Modifier un client' : 'Ajouter un client' }}</h3>
-                <button (click)="closeModal()" class="text-gray-500 hover:text-black text-xl">&times;</button>
-            </div>
-
-            <hr class="mb-6">
-
-            <!-- Début du formulaire -->
-            <form [formGroup]="clientForm">
-                <!-- Type & Référence du client -->
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label for="typeClient" class="block text-gray-700 text-sm mb-1">Type de client *</label>
-                        <select formControlName="typeClient" id="typeClient"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['typeClient'].invalid}">
-                            <option value="">Sélectionnez un type</option>
-                            <option value="particulier">Client particulier</option>
-                            <option value="entreprise">Entreprise</option>
-                            <option value="auto-entrepreneur">Auto-entrepreneur</option>
-                            <option value="association">Association</option>
-                            <option value="administration">Administration publique</option>
-                            <option value="freelance">Freelance</option>
-                            <option value="grand-compte">Grand compte</option>
-                            <option value="pme-tpe">PME / TPE</option>
-                            <option value="revendeur">Revendeur</option>
-                            <option value="partenaire">Partenaire</option>
-                        </select>
-                        <p *ngIf="submitted && clientForm.controls['typeClient'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Référence client *</label>
-                        <input formControlName="referenceClient" placeholder="5"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm bg-gray-100 text-gray-700"
-                            type="number">
-                    </div>
-                </div>
-
-                <!-- Informations d'entreprise -->
-                <h4 class="text-lg font-semibold mb-2">Informations d'entreprise</h4>
-                <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Nom de l'entreprise *</label>
-                        <input formControlName="nomEntreprise" placeholder="Ex: Nuance Digitale"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['nomEntreprise'].invalid}"
-                            type="text">
-                        <p *ngIf="submitted && clientForm.controls['nomEntreprise'].invalid"
-                            class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Numéro SIRET *</label>
-                        <input formControlName="numeroSiret" placeholder="12345678900012"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['numeroSiret'].invalid}"
-                            type="number" max="14">
-                        <p *ngIf="submitted && clientForm.controls['numeroSiret'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Numéro TVA *</label>
-                        <input formControlName="numeroTva" placeholder="FR12345678901"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['numeroTva'].invalid}"
-                            type="text" maxlength="13">
-                        <p *ngIf="submitted && clientForm.controls['numeroTva'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Coordonnées personnelles -->
-                <h4 class="text-lg font-semibold mb-2">Coordonnées</h4>
-                <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Nom *</label>
-                        <input formControlName="nom" placeholder="Jean"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['nom'].invalid}" type="text">
-                        <p *ngIf="submitted && clientForm.controls['nom'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Prénom *</label>
-                        <input formControlName="prenom" placeholder="Melanchon"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['prenom'].invalid}"
-                            type="text">
-                        <p *ngIf="submitted && clientForm.controls['prenom'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">E-mail *</label>
-                        <input formControlName="email" placeholder="exemple@email.com"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['email'].invalid}"
-                            type="email">
-                        <p *ngIf="submitted && clientForm.controls['email'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Téléphone</label>
-                        <input formControlName="telephone" placeholder="+33 6 12 34 56 78"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm" type="text">
-                    </div>
-                </div>
-
-                <!-- Adresse -->
-                <h4 class="text-lg font-semibold mb-2">Adresse</h4>
-                <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div class="col-span-2">
-                        <label class="block text-gray-700 text-sm mb-1">Adresse *</label>
-                        <input formControlName="adresse" placeholder="123 Rue de Paris"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['adresse'].invalid}"
-                            type="text">
-                        <p *ngIf="submitted && clientForm.controls['adresse'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Code postal *</label>
-                        <input formControlName="codePostal" placeholder="75001"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['codePostal'].invalid}"
-                            type="number">
-                        <p *ngIf="submitted && clientForm.controls['codePostal'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Ville *</label>
-                        <input formControlName="ville" placeholder="Paris"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['ville'].invalid}"
-                            type="text">
-                        <p *ngIf="submitted && clientForm.controls['ville'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 text-sm mb-1">Pays *</label>
-                        <input formControlName="pays" placeholder="France"
-                            class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            [ngClass]="{'border-red-500': submitted && clientForm.controls['pays'].invalid}"
-                            type="text">
-                        <p *ngIf="submitted && clientForm.controls['pays'].invalid" class="text-red-500 text-sm">
-                            Ce champ est obligatoire.
-                        </p>
-                    </div>
-                </div>
-
-                <hr class="my-6">
-
-                <!-- Boutons d'action -->
-                <div class="flex justify-between">
-                    <button type="button" (click)="closeModal()"
-                        class="w-full px-4 py-2 mr-2 rounded-lg text-[#F45725] bg-[#FDEAE4] font-semibold hover:bg-[#FBC4B4] transition">
-                        ANNULER
-                    </button>
-                    <button type="button" (click)="edit ? modifierClient() : submitClient()"
-                        class="w-full px-4 py-2 ml-2 rounded-lg text-[#4AC99B] bg-[#E9F8F3] font-semibold hover:bg-[#CDECE0] transition">
-                        {{ edit ? 'MODIFIER' : 'AJOUTER' }}
-                    </button>
-
-                </div>
-            </form>
-
+      <div class="bg-white w-11/12 sm:w-4/5 lg:w-3/5 p-6 rounded-2xl shadow-lg max-h-[80vh] overflow-y-auto">
+        <!-- En-tête de la modale -->
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-xl font-semibold">{{ edit ? 'Modifier un client' : 'Ajouter un client' }}</h3>
+          <button (click)="closeModal()" type="button" class="text-gray-500 hover:text-black text-xl">&times;</button>
         </div>
+        <hr class="mb-6">
+        <!-- Formulaire Client -->
+        <form [formGroup]="clientForm">
+          <!-- Type & Référence du client -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label for="typeClient" class="block text-gray-700 text-sm mb-1">Type de client *</label>
+              <select formControlName="typeClient" id="typeClient"
+                      class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      [ngClass]="{'border-red-500': submitted && clientForm.controls['typeClient'].invalid}">
+                <option value="">Sélectionnez un type</option>
+                <option value="particulier">Client particulier</option>
+                <option value="entreprise">Entreprise</option>
+                <option value="auto-entrepreneur">Auto-entrepreneur</option>
+                <option value="association">Association</option>
+                <option value="administration">Administration publique</option>
+                <option value="freelance">Freelance</option>
+                <option value="grand-compte">Grand compte</option>
+                <option value="pme-tpe">PME / TPE</option>
+                <option value="revendeur">Revendeur</option>
+                <option value="partenaire">Partenaire</option>
+              </select>
+              <p *ngIf="submitted && clientForm.controls['typeClient'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Référence client *</label>
+              <input formControlName="referenceClient" placeholder="5"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm bg-gray-100 text-gray-700"
+                     type="number">
+            </div>
+          </div>
+          <!-- Informations d'entreprise -->
+          <h4 class="text-lg font-semibold mb-2">Informations d'entreprise</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Nom de l'entreprise *</label>
+              <input formControlName="nomEntreprise" placeholder="Ex: Nuance Digitale"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['nomEntreprise'].invalid}"
+                     type="text">
+              <p *ngIf="submitted && clientForm.controls['nomEntreprise'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Numéro SIRET *</label>
+              <input formControlName="numeroSiret" placeholder="12345678900012"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['numeroSiret'].invalid}"
+                     type="number">
+              <p *ngIf="submitted && clientForm.controls['numeroSiret'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Numéro TVA *</label>
+              <input formControlName="numeroTva" placeholder="FR12345678901"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['numeroTva'].invalid}"
+                     type="text" maxlength="13">
+              <p *ngIf="submitted && clientForm.controls['numeroTva'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+          </div>
+          <!-- Coordonnées personnelles -->
+          <h4 class="text-lg font-semibold mb-2">Coordonnées</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Nom *</label>
+              <input formControlName="nom" placeholder="Jean"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['nom'].invalid}" type="text">
+              <p *ngIf="submitted && clientForm.controls['nom'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Prénom *</label>
+              <input formControlName="prenom" placeholder="Melanchon"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['prenom'].invalid}" type="text">
+              <p *ngIf="submitted && clientForm.controls['prenom'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">E-mail *</label>
+              <input formControlName="email" placeholder="exemple@email.com"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['email'].invalid}" type="email">
+              <p *ngIf="submitted && clientForm.controls['email'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Téléphone</label>
+              <input formControlName="telephone" placeholder="+33 6 12 34 56 78"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm" type="text">
+            </div>
+          </div>
+          <!-- Adresse -->
+          <h4 class="text-lg font-semibold mb-2">Adresse</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="md:col-span-2">
+              <label class="block text-gray-700 text-sm mb-1">Adresse *</label>
+              <input formControlName="adresse" placeholder="123 Rue de Paris"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['adresse'].invalid}" type="text">
+              <p *ngIf="submitted && clientForm.controls['adresse'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Code postal *</label>
+              <input formControlName="codePostal" placeholder="75001"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['codePostal'].invalid}" type="number">
+              <p *ngIf="submitted && clientForm.controls['codePostal'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Ville *</label>
+              <input formControlName="ville" placeholder="Paris"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['ville'].invalid}" type="text">
+              <p *ngIf="submitted && clientForm.controls['ville'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+            <div>
+              <label class="block text-gray-700 text-sm mb-1">Pays *</label>
+              <input formControlName="pays" placeholder="France"
+                     class="border border-gray-300 w-full p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                     [ngClass]="{'border-red-500': submitted && clientForm.controls['pays'].invalid}" type="text">
+              <p *ngIf="submitted && clientForm.controls['pays'].invalid" class="text-red-500 text-sm">
+                Ce champ est obligatoire.
+              </p>
+            </div>
+          </div>
+  
+          <hr class="my-6">
+  
+          <!-- Boutons d'action -->
+          <div class="flex gap-4">
+            <button type="button" (click)="closeModal()"
+                    class="w-1/2 px-4 py-2 rounded-lg text-[#F45725] bg-[#FDEAE4] font-semibold hover:bg-[#FBC4B4] transition">
+              ANNULER
+            </button>
+            <button type="button" (click)="edit ? modifierClient() : submitClient()"
+                    class="w-1/2 px-4 py-2 rounded-lg text-[#4AC99B] bg-[#E9F8F3] font-semibold hover:bg-[#CDECE0] transition">
+              {{ edit ? 'MODIFIER' : 'AJOUTER' }}
+            </button>
+          </div>
+          
+        </form>
+      </div>
     </div>
+  </div>
+  
