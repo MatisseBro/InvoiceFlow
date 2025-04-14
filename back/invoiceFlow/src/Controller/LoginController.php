@@ -109,4 +109,5 @@ class LoginController extends AbstractController
             'token' => $token,
         ], JsonResponse::HTTP_OK);
     }
+
 }
