@@ -91,9 +91,9 @@
                   <!-- Affichage de la liste des clients -->
                   <div class="space-y-4">
                     <div *ngFor="let client of clients; trackBy: trackById"
-                         class="bg-gray-100 rounded-lg p-4 flex flex-col md:flex-row justify-between items-center">
+                         class="bg-[#EFF6FF] rounded-lg p-4 flex flex-col md:flex-row justify-between items-center">
                       <div class="mb-2 md:mb-0">
-                        <h3 class="text-lg font-semibold">{{ client.nom }} {{ client.prenom }}</h3>
+                        <h3 class="text-lg font-semibold text-blue-500">{{ client.nom | uppercase }} {{ client.prenom }}</h3>
                         <p class="text-sm text-gray-600"><strong>Entreprise:</strong> {{ client.nomEntreprise }}</p>
                         <p class="text-sm text-gray-600"><strong>Téléphone:</strong> {{ client.telephone }}</p>
                         <p class="text-sm text-gray-600"><strong>Email:</strong> {{ client.email }}</p>
