@@ -7,36 +7,37 @@ import { ClientComponent } from './client/client.component';
 import { RegisterComponent } from './components/register/register.component';
 import { AuthGuard } from './guard/auth.guard';  // Assurez-vous que le chemin correspond à l'emplacement de votre AuthGuard
 import { LayoutComponent } from './layout/layout.component';
+import { ParametreComponent } from './parametre/parametre.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: LayoutComponent,
-    children: [
-      { path: '', redirectTo: 'accueil', pathMatch: 'full' },
-      { path : 'accueil', component: LandingPageComponent },
-      { path: 'produit', component: ProduitComponent, canActivate: [AuthGuard] },
-      { path: 'facture', component: FactureComponent, canActivate: [AuthGuard] },
-      { path: 'client', component: ClientComponent, canActivate: [AuthGuard] },
-    ]
-  },
+  // Routes publiques pour l'authentification
   {
     path: 'auth',
     children: [
-    //  { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: '', redirectTo: 'landing', pathMatch: 'full' },
+      { path : 'landing', component: LandingPageComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
+   
+      { path: '**', redirectTo: 'login', pathMatch: 'full' }
     ]
   },
+  
+  // Routes protégées (layout avec outlet pour les routes enfants)
+  {
+    path: '',
+    component: LayoutComponent,
+    canActivate: [AuthGuard], 
+    children: [
+      // Définir une route par défaut pour le chemin vide
+      { path: '', redirectTo: 'produit', pathMatch: 'full' },
 
-
-  // { path: '', component: LandingPageComponent },
-  // { path: 'login', component: LoginComponent },
-  // { path: 'register', component: RegisterComponent },
-
-  // // Les routes protégées par le guard
-  // { path: 'produit', component: ProduitComponent, canActivate: [AuthGuard] },
-  // { path: 'facture', component: FactureComponent, canActivate: [AuthGuard] },
-  // { path: 'client', component: ClientComponent, canActivate: [AuthGuard] },
-
+      { path: 'produit', component: ProduitComponent },
+      { path: 'facture', component: FactureComponent },
+      { path: 'client', component: ClientComponent },
+      { path : 'parametre', component : ParametreComponent },
+      // Une wildcard pour intercepter toute URL non prévue dans ce contexte
+      { path: '**', redirectTo: 'produit', pathMatch: 'full' }
+    ]
+  },
 ];

@@ -15,11 +15,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
   loginForm!: FormGroup;
-  errorMessage: string | null = null; // Message d'erreur
-  showPassword!: boolean;
-  
+  errorMessage: string | null = null;   // Message d'erreur
+  successMessage: string | null = null; // Message de succès
+  alertTimeout: any;                    // Pour gérer le setTimeout
+  showPassword: boolean = false;        // Pour basculer la visibilité du mot de passe
 
   constructor(
     private fb: FormBuilder,
@@ -39,7 +39,39 @@ export class LoginComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  
+  // Définit un message de succès et le masque après 5 secondes
+  setSuccessMessage(message: string): void {
+    this.successMessage = message;
+    this.errorMessage = null;
+    if (this.alertTimeout) {
+      clearTimeout(this.alertTimeout);
+    }
+    this.alertTimeout = setTimeout(() => {
+      this.successMessage = null;
+    }, 5000);
+  }
+
+  // Définit un message d'erreur et le masque après 5 secondes
+  setErrorMessage(message: string): void {
+    this.errorMessage = message;
+    this.successMessage = null;
+    if (this.alertTimeout) {
+      clearTimeout(this.alertTimeout);
+    }
+    this.alertTimeout = setTimeout(() => {
+      this.errorMessage = null;
+    }, 5000);
+  }
+
+  // Ferme les alertes manuellement
+  closeAlert(): void {
+    this.successMessage = null;
+    this.errorMessage = null;
+    if (this.alertTimeout) {
+      clearTimeout(this.alertTimeout);
+    }
+  }
+
   // Méthode pour la connexion
   login(): void {
     if (this.loginForm.valid) {
@@ -49,13 +81,21 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           console.log('Connexion réussie', response);
           localStorage.setItem('token', response.token);
-          this.router.navigate(['/']);
+          // Afficher le message de succès
+          this.setSuccessMessage("Bien connecté, bienvenue sur Invoice Flow !");
+          // Rediriger après 2 secondes
+          setTimeout(() => {
+            this.router.navigate(['/']);
+          }, 2000);
         },
         error: (error) => {
           console.error('Erreur lors de la connexion', error);
-          this.errorMessage = 'Erreur lors de la connexion';
+          this.setErrorMessage('Erreur lors de la connexion');
         }
       });
+    } else {
+      this.loginForm.markAllAsTouched();
+      this.setErrorMessage('Veuillez remplir correctement le formulaire de connexion.');
     }
   }
 }
