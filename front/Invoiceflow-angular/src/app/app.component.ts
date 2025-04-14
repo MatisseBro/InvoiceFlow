@@ -9,13 +9,5 @@ import { Router, RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'Invoiceflow-angular';
 
-  constructor(private router: Router) 
-  {}
-
-  logout(): void {
-    localStorage.removeItem('auth_token');
-    this.router.navigate(['/login']);
-  }
 }
