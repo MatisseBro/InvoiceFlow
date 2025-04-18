@@ -51,6 +51,7 @@ class ParametreController extends AbstractController
                 'iban'               => $entreprise ? $entreprise->getIban() : null,
                 'bic'                => $entreprise ? $entreprise->getBic() : null,
                 'nomBanque'          => $entreprise ? $entreprise->getNomBanque() : null,
+                'conditionReglement' => $entreprise ? $entreprise->getConditionReglement() : null,
             ],
         ];
 
@@ -158,6 +159,9 @@ class ParametreController extends AbstractController
         }
         if (isset($data['nomBanque'])) {
             $entreprise->setNomBanque($data['nomBanque']);
+        }
+        if (isset($data['conditionReglement'])) {
+            $entreprise->setConditionReglement($data['conditionReglement']);
         }
 
         // Persiste l'entité Entreprise (ainsi que l'utilisateur modifié)

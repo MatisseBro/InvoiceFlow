@@ -60,7 +60,8 @@ export class ParametreComponent implements OnInit {
       siren: ['', [Validators.required, Validators.pattern('^\\d{9}$')]],   // exactement 9 chiffres
       iban: ['', [Validators.required, Validators.pattern('^FR\\d{2}[A-Z0-9]{23}$')]], // IBAN français complet
       bic: ['', Validators.required],
-      nomBanque: ['', Validators.required]
+      nomBanque: ['', Validators.required],
+      conditionReglement: ['', Validators.required]
     });
   }
 
@@ -90,7 +91,8 @@ export class ParametreComponent implements OnInit {
             siren: data.entreprise.siren,
             iban: data.entreprise.iban,
             bic: data.entreprise.bic,
-            nomBanque: data.entreprise.nomBanque
+            nomBanque: data.entreprise.nomBanque,
+            conditionReglement: data.entreprise.conditionReglement
           });
         }
   
@@ -113,7 +115,8 @@ export class ParametreComponent implements OnInit {
     this.closeAlert();
   }
 
-  // Définit un message de succès et le masque après 5 secondes
+  // Méthodes d'alerte
+
   setSuccessMessage(message: string): void {
     this.successMessage = message;
     this.errorMessage = null;
@@ -124,7 +127,6 @@ export class ParametreComponent implements OnInit {
     }, 5000);
   }
 
-  // Définit un message d'erreur et le masque après 5 secondes
   setErrorMessage(message: string): void {
     this.errorMessage = message;
     this.successMessage = null;
@@ -135,7 +137,6 @@ export class ParametreComponent implements OnInit {
     }, 5000);
   }
 
-  // Ferme manuellement les alertes
   closeAlert(): void {
     this.successMessage = null;
     this.errorMessage = null;
@@ -180,13 +181,12 @@ export class ParametreComponent implements OnInit {
     });
   }
 
-  // Gestion de la sélection d'un fichier
+  // Gestion de la sélection d'un fichier (photo de profil)
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input && input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
-
-      // Génération de l'aperçu via FileReader
+      // Générer l'aperçu via FileReader
       const reader = new FileReader();
       reader.onload = (e) => {
         this.previewUrl = e.target?.result ?? null;

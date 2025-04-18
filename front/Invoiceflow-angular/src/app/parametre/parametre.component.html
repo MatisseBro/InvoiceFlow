@@ -1,87 +1,87 @@
 <div class="max-w-4xl mx-auto p-4">
 
-   <!-- Alerte FIXED en haut à droite avec fade in et margin-top custom -->
-<div *ngIf="successMessage || errorMessage" class="fixed top-0 right-0 z-50 mt-[100px] mr-4 fade-in">
-    <!-- Alerte de succès -->
-    <div *ngIf="successMessage" class="rounded-md bg-green-50 p-4 shadow-lg mb-2">
-      <div class="flex items-start">
-        <div class="flex-shrink-0">
-          <!-- Icône de succès -->
-          <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-          </svg>
+    <!-- Alerte FIXED en haut à droite avec fade in et margin-top custom -->
+    <div *ngIf="successMessage || errorMessage" class="fixed top-0 right-0 z-50 mt-[100px] mr-4 fade-in">
+        <!-- Alerte de succès -->
+        <div *ngIf="successMessage" class="rounded-md bg-green-50 p-4 shadow-lg mb-2">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <!-- Icône de succès -->
+                    <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                </div>
+                <div class="ml-3 flex-1">
+                    <h3 class="text-sm font-medium text-green-800">Succès</h3>
+                    <div class="mt-2 text-sm text-green-700">
+                        <p>{{ successMessage }}</p>
+                    </div>
+                </div>
+                <div class="ml-3 flex-shrink-0">
+                    <button (click)="closeAlert()" type="button" class="text-green-500 hover:text-green-700"
+                        aria-label="Close">
+                        <!-- Icône de fermeture -->
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="ml-3 flex-1">
-          <h3 class="text-sm font-medium text-green-800">Succès</h3>
-          <div class="mt-2 text-sm text-green-700">
-            <p>{{ successMessage }}</p>
-          </div>
+
+        <!-- Alerte d'erreur -->
+        <div *ngIf="errorMessage" class="rounded-md bg-red-50 p-4 shadow-lg fade-in">
+            <div class="flex items-start">
+                <div class="flex-shrink-0">
+                    <!-- Icône d'erreur -->
+                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </div>
+                <div class="ml-3 flex-1">
+                    <h3 class="text-sm font-medium text-red-800">Erreur</h3>
+                    <div class="mt-2 text-sm text-red-700">
+                        <p>{{ errorMessage }}</p>
+                    </div>
+                </div>
+                <div class="ml-3 flex-shrink-0">
+                    <button (click)="closeAlert()" type="button" class="text-red-500 hover:text-red-700"
+                        aria-label="Close">
+                        <!-- Icône de fermeture -->
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="ml-3 flex-shrink-0">
-          <button (click)="closeAlert()" type="button" class="text-green-500 hover:text-green-700" aria-label="Close">
-            <!-- Icône de fermeture -->
-            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
     </div>
-  
-    <!-- Alerte d'erreur -->
-    <div *ngIf="errorMessage" class="rounded-md bg-red-50 p-4 shadow-lg fade-in">
-      <div class="flex items-start">
-        <div class="flex-shrink-0">
-          <!-- Icône d'erreur -->
-          <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </div>
-        <div class="ml-3 flex-1">
-          <h3 class="text-sm font-medium text-red-800">Erreur</h3>
-          <div class="mt-2 text-sm text-red-700">
-            <p>{{ errorMessage }}</p>
-          </div>
-        </div>
-        <div class="ml-3 flex-shrink-0">
-          <button (click)="closeAlert()" type="button" class="text-red-500 hover:text-red-700" aria-label="Close">
-            <!-- Icône de fermeture -->
-            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
     <!-- Navigation par Tabs -->
     <div class="border-b border-gray-200 mb-6">
-      <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-        <a
-          (click)="setActiveTab('user')"
-          [ngClass]="
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+            <a (click)="setActiveTab('user')" [ngClass]="
             activeTab === 'user'
               ? 'border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer'
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer'
-          "
-        >
-          User
-        </a>
-        <a
-          (click)="setActiveTab('entreprise')"
-          [ngClass]="
+          ">
+                User
+            </a>
+            <a (click)="setActiveTab('entreprise')" [ngClass]="
             activeTab === 'entreprise'
               ? 'border-indigo-500 text-indigo-600 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer'
               : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm cursor-pointer'
-          "
-        >
-          Entreprise
-        </a>
-      </nav>
+          ">
+                Entreprise
+            </a>
+        </nav>
     </div>
-  
+
     <!-- Onglet "User" -->
 <div *ngIf="activeTab === 'user'" class="bg-white rounded-lg shadow-md p-6 mb-8">
     <form [formGroup]="userForm" (ngSubmit)="saveInfoUser()">
@@ -196,281 +196,219 @@
 
     <!-- Onglet "Entreprise" -->
     <div *ngIf="activeTab === 'entreprise'" class="bg-white rounded-lg shadow-md p-6">
-      <form [formGroup]="entrepriseForm" (ngSubmit)="saveInfoEntreprise()">
-        <div class="grid grid-cols-1 gap-6">
-          <!-- Nom de l'entreprise -->
-          <div>
-            <label for="nomEntreprise" class="block text-sm font-medium text-gray-700">
-              Nom de l'entreprise
-            </label>
-            <input
-              formControlName="nomEntreprise"
-              id="nomEntreprise"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="
+        <form [formGroup]="entrepriseForm" (ngSubmit)="saveInfoEntreprise()">
+            <div class="grid grid-cols-1 gap-6">
+                <!-- Nom de l'entreprise -->
+                <div>
+                    <label for="nomEntreprise" class="block text-sm font-medium text-gray-700">
+                        Nom de l'entreprise
+                    </label>
+                    <input formControlName="nomEntreprise" id="nomEntreprise" type="text"
+                        class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    <div *ngIf="
                 entrepriseForm.controls['nomEntreprise'].invalid &&
                 entrepriseForm.controls['nomEntreprise'].touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="entrepriseForm.controls['nomEntreprise'].errors?.['required']">
-                Ce champ est requis.
-              </div>
-            </div>
-          </div>
-  
-          <!-- Numéro de téléphone -->
-          <div>
-            <label for="telephoneEntreprise" class="block text-sm font-medium text-gray-700">
-              Numéro de téléphone
-            </label>
-            <input
-              formControlName="telephoneEntreprise"
-              id="telephoneEntreprise"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="
+              " class="text-red-500 text-sm mt-1">
+                        <div *ngIf="entrepriseForm.controls['nomEntreprise'].errors?.['required']">
+                            Ce champ est requis.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Numéro de téléphone -->
+                <div>
+                    <label for="telephoneEntreprise" class="block text-sm font-medium text-gray-700">
+                        Numéro de téléphone
+                    </label>
+                    <input formControlName="telephoneEntreprise" id="telephoneEntreprise" type="text"
+                        class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    <div *ngIf="
                 entrepriseForm.controls['telephoneEntreprise'].invalid &&
                 entrepriseForm.controls['telephoneEntreprise'].touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="entrepriseForm.controls['telephoneEntreprise'].errors?.['required']">
-                Ce champ est requis.
-              </div>
-            </div>
-          </div>
-  
-          <!-- Adresse 1 -->
-          <div>
-            <label for="adresse1" class="block text-sm font-medium text-gray-700">
-              Adresse 1
-            </label>
-            <input
-              formControlName="adresse1"
-              id="adresse1"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="
+              " class="text-red-500 text-sm mt-1">
+                        <div *ngIf="entrepriseForm.controls['telephoneEntreprise'].errors?.['required']">
+                            Ce champ est requis.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adresse 1 -->
+                <div>
+                    <label for="adresse1" class="block text-sm font-medium text-gray-700">
+                        Adresse 1
+                    </label>
+                    <input formControlName="adresse1" id="adresse1" type="text"
+                        class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    <div *ngIf="
                 entrepriseForm.controls['adresse1'].invalid && entrepriseForm.controls['adresse1'].touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="entrepriseForm.controls['adresse1'].errors?.['required']">
-                Ce champ est requis.
-              </div>
-            </div>
-          </div>
-  
-          <!-- Adresse 2 -->
-          <div>
-            <label for="adresse2" class="block text-sm font-medium text-gray-700">
-              Adresse 2
-            </label>
-            <input
-              formControlName="adresse2"
-              id="adresse2"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-  
-          <!-- Code Postal / Ville -->
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label for="codePostal" class="block text-sm font-medium text-gray-700">
-                Code postal
-              </label>
-              <input
-                formControlName="codePostal"
-                id="codePostal"
-                type="text"
-                class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-              <div
-                *ngIf="
+              " class="text-red-500 text-sm mt-1">
+                        <div *ngIf="entrepriseForm.controls['adresse1'].errors?.['required']">
+                            Ce champ est requis.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adresse 2 -->
+                <div>
+                    <label for="adresse2" class="block text-sm font-medium text-gray-700">
+                        Adresse 2
+                    </label>
+                    <input formControlName="adresse2" id="adresse2" type="text"
+                        class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                </div>
+
+                <!-- Code Postal / Ville -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="codePostal" class="block text-sm font-medium text-gray-700">
+                            Code postal
+                        </label>
+                        <input formControlName="codePostal" id="codePostal" type="text"
+                            class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        <div *ngIf="
                   entrepriseForm.controls['codePostal'].invalid &&
                   entrepriseForm.controls['codePostal'].touched
-                "
-                class="text-red-500 text-sm mt-1"
-              >
-                <div *ngIf="entrepriseForm.controls['codePostal'].errors?.['required']">
-                  Ce champ est requis.
-                </div>
-              </div>
-            </div>
-            <div>
-              <label for="ville" class="block text-sm font-medium text-gray-700">
-                Ville
-              </label>
-              <input
-                formControlName="ville"
-                id="ville"
-                type="text"
-                class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-              <div
-                *ngIf="
+                " class="text-red-500 text-sm mt-1">
+                            <div *ngIf="entrepriseForm.controls['codePostal'].errors?.['required']">
+                                Ce champ est requis.
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="ville" class="block text-sm font-medium text-gray-700">
+                            Ville
+                        </label>
+                        <input formControlName="ville" id="ville" type="text"
+                            class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        <div *ngIf="
                   entrepriseForm.controls['ville'].invalid && entrepriseForm.controls['ville'].touched
-                "
-                class="text-red-500 text-sm mt-1"
-              >
-                <div *ngIf="entrepriseForm.controls['ville'].errors?.['required']">
-                  Ce champ est requis.
+                " class="text-red-500 text-sm mt-1">
+                            <div *ngIf="entrepriseForm.controls['ville'].errors?.['required']">
+                                Ce champ est requis.
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Pays -->
-          <div>
-            <label for="pays" class="block text-sm font-medium text-gray-700">Pays</label>
-            <input
-              formControlName="pays"
-              id="pays"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="
+
+                <!-- Pays -->
+                <div>
+                    <label for="pays" class="block text-sm font-medium text-gray-700">Pays</label>
+                    <input formControlName="pays" id="pays" type="text"
+                        class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    <div *ngIf="
                 entrepriseForm.controls['pays'].invalid && entrepriseForm.controls['pays'].touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="entrepriseForm.controls['pays'].errors?.['required']">
-                Ce champ est requis.
-              </div>
-            </div>
-          </div>
-  
-          <!-- Siret / Siren -->
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label for="siret" class="block text-sm font-medium text-gray-700">
-                Siret
-              </label>
-              <input
-                formControlName="siret"
-                id="siret"
-                type="text"
-                class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-              <div
-                *ngIf="
+              " class="text-red-500 text-sm mt-1">
+                        <div *ngIf="entrepriseForm.controls['pays'].errors?.['required']">
+                            Ce champ est requis.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Siret / Siren -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="siret" class="block text-sm font-medium text-gray-700">
+                            Siret
+                        </label>
+                        <input formControlName="siret" id="siret" type="text"
+                            class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        <div *ngIf="
                   entrepriseForm.controls['siret'].invalid && entrepriseForm.controls['siret'].touched
-                "
-                class="text-red-500 text-sm mt-1"
-              >
-                <div *ngIf="entrepriseForm.controls['siret'].errors?.['required']">
-                  Ce champ est requis.
-                </div>
-                <div *ngIf="entrepriseForm.controls['siret'].errors?.['pattern']">
-                  Le Siret doit être composé de exactement 14 chiffres.
-                </div>
-              </div>
-            </div>
-            <div>
-              <label for="siren" class="block text-sm font-medium text-gray-700">
-                Siren
-              </label>
-              <input
-                formControlName="siren"
-                id="siren"
-                type="text"
-                class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-              <div
-                *ngIf="
+                " class="text-red-500 text-sm mt-1">
+                            <div *ngIf="entrepriseForm.controls['siret'].errors?.['required']">
+                                Ce champ est requis.
+                            </div>
+                            <div *ngIf="entrepriseForm.controls['siret'].errors?.['pattern']">
+                                Le Siret doit être composé de exactement 14 chiffres.
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="siren" class="block text-sm font-medium text-gray-700">
+                            Siren
+                        </label>
+                        <input formControlName="siren" id="siren" type="text"
+                            class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        <div *ngIf="
                   entrepriseForm.controls['siren'].invalid && entrepriseForm.controls['siren'].touched
-                "
-                class="text-red-500 text-sm mt-1"
-              >
-                <div *ngIf="entrepriseForm.controls['siren'].errors?.['required']">
-                  Ce champ est requis.
+                " class="text-red-500 text-sm mt-1">
+                            <div *ngIf="entrepriseForm.controls['siren'].errors?.['required']">
+                                Ce champ est requis.
+                            </div>
+                            <div *ngIf="entrepriseForm.controls['siren'].errors?.['pattern']">
+                                Le Siren doit être composé de exactement 9 chiffres.
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div *ngIf="entrepriseForm.controls['siren'].errors?.['pattern']">
-                  Le Siren doit être composé de exactement 9 chiffres.
-                </div>
-              </div>
-            </div>
-          </div>
-  
-          <!-- IBAN -->
-          <div>
-            <label for="iban" class="block text-sm font-medium text-gray-700">IBAN</label>
-            <input
-              formControlName="iban"
-              id="iban"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="
+
+                <!-- IBAN -->
+                <div>
+                    <label for="iban" class="block text-sm font-medium text-gray-700">IBAN</label>
+                    <input formControlName="iban" id="iban" type="text"
+                        class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    <div *ngIf="
                 entrepriseForm.controls['iban'].invalid && entrepriseForm.controls['iban'].touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="entrepriseForm.controls['iban'].errors?.['required']">
-                Ce champ est requis.
-              </div>
-              <div *ngIf="entrepriseForm.controls['iban'].errors?.['pattern']">
-                L'IBAN doit commencer par "FR", suivi de 2 chiffres et de 23 caractères alphanumériques.
-              </div>
-            </div>
-          </div>
-  
-          <!-- BIC -->
-          <div>
-            <label for="bic" class="block text-sm font-medium text-gray-700">BIC</label>
-            <input
-              formControlName="bic"
-              id="bic"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-  
-          <!-- Nom Banque -->
-          <div>
-            <label for="nomBanque" class="block text-sm font-medium text-gray-700">
-              Nom Banque
-            </label>
-            <input
-              formControlName="nomBanque"
-              id="nomBanque"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="
+              " class="text-red-500 text-sm mt-1">
+                        <div *ngIf="entrepriseForm.controls['iban'].errors?.['required']">
+                            Ce champ est requis.
+                        </div>
+                        <div *ngIf="entrepriseForm.controls['iban'].errors?.['pattern']">
+                            L'IBAN doit commencer par "FR", suivi de 2 chiffres et de 23 caractères alphanumériques.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BIC -->
+                <div>
+                    <label for="bic" class="block text-sm font-medium text-gray-700">BIC</label>
+                    <input formControlName="bic" id="bic" type="text"
+                        class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                </div>
+
+                <!-- Nom Banque -->
+                <div>
+                    <label for="nomBanque" class="block text-sm font-medium text-gray-700">
+                        Nom Banque
+                    </label>
+                    <input formControlName="nomBanque" id="nomBanque" type="text"
+                        class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                    <div *ngIf="
                 entrepriseForm.controls['nomBanque'].invalid &&
                 entrepriseForm.controls['nomBanque'].touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="entrepriseForm.controls['nomBanque'].errors?.['required']">
-                Ce champ est requis.
-              </div>
+              " class="text-red-500 text-sm mt-1">
+
+                        <div *ngIf="entrepriseForm.controls['nomBanque'].errors?.['required']">
+                            Ce champ est requis.
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="conditionReglement" class="block text-sm font-medium text-gray-700">
+                        Condition Règlement
+                    </label>
+                    <textarea
+                      formControlName="conditionReglement"
+                      id="conditionReglement"
+                      type="text"
+                      class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    ></textarea>
+                    <div
+                      *ngIf="entrepriseForm.controls['conditionReglement'].invalid && entrepriseForm.controls['conditionReglement'].touched"
+                      class="text-red-500 text-sm mt-1"
+                    >
+                      <div *ngIf="entrepriseForm.controls['conditionReglement'].errors?.['required']">
+                        Ce champ est requis.
+                      </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-  
-        <!-- Bouton ENREGISTRER -->
-        <button
-          type="submit"
-          class="mt-6 w-full px-4 py-2 rounded-lg border border-[#4AC99B] text-[#4AC99B] bg-[#E9F8F3]
-                 font-semibold hover:bg-[#CDECE0] transition duration-300"
-        >
-          ENREGISTRER
-        </button>
-      </form>
+
+            <!-- Bouton ENREGISTRER -->
+            <button type="submit" class="mt-6 w-full px-4 py-2 rounded-lg border border-[#4AC99B] text-[#4AC99B] bg-[#E9F8F3]
+                 font-semibold hover:bg-[#CDECE0] transition duration-300">
+                ENREGISTRER
+            </button>
+        </form>
     </div>
-  </div>
-  
+</div>
