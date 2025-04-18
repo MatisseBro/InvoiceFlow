@@ -87,7 +87,7 @@ export class ProduitComponent implements OnInit {
     if (tva > 0) {
       const prixHT = prixTTC / (1 + tva / 100);
       this.produitForm.patchValue({ prixHT: parseFloat(prixHT.toFixed(2)) });
-    }
+    } 
   }
 
   loadProduits(): void {
