@@ -46,6 +46,13 @@ uploadProfilePicture(formData: FormData): Observable<any> {
     this.profilUpdateSubject.next('notif'); // Émet un événement pour notifier les abonnés
   })) ;
 }
+
+deleteProfilePicture(): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.delete<any>(`${this.apiUrl}/delete-profile-picture`, { headers }).pipe(tap(() => {
+    this.profilUpdateSubject.next('notif'); // Émet un événement pour notifier les abonnés
+  }));
+}
  
 
 }

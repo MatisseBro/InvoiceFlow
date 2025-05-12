@@ -83,156 +83,117 @@
     </div>
   
     <!-- Onglet "User" -->
-    <div *ngIf="activeTab === 'user'" class="bg-white rounded-lg shadow-md p-6 mb-8">
-      <form [formGroup]="userForm" (ngSubmit)="saveInfoUser()">
-        <div class="grid grid-cols-1 gap-6">
-          <!-- Adresse mail -->
+<div *ngIf="activeTab === 'user'" class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <form [formGroup]="userForm" (ngSubmit)="saveInfoUser()">
+      <div class="grid grid-cols-1 gap-6">
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">Adresse mail</label>
+          <input formControlName="email" id="email" type="email"
+                 class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+          <div *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched"
+               class="text-red-500 text-sm mt-1">
+            <div *ngIf="userForm.controls['email'].errors?.['required']">Ce champ est requis.</div>
+            <div *ngIf="userForm.controls['email'].errors?.['email']">L'adresse mail n'est pas valide.</div>
+          </div>
+        </div>
+  
+        <!-- Mot de passe -->
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+          <input formControlName="password" id="password" type="password"
+                 class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+          <div *ngIf="userForm.controls['password'].invalid && userForm.controls['password'].touched"
+               class="text-red-500 text-sm mt-1">
+            <div *ngIf="userForm.controls['password'].errors?.['required']">Ce champ est requis.</div>
+          </div>
+        </div>
+  
+        <!-- Nom & Prénom -->
+        <div class="grid grid-cols-2 gap-4">
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">
-              Adresse mail
-            </label>
-            <input
-              formControlName="email"
-              id="email"
-              type="email"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="userForm.controls['email'].invalid && userForm.controls['email'].touched"
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="userForm.controls['email'].errors?.['required']">
-                Ce champ est requis.
-              </div>
-              <div *ngIf="userForm.controls['email'].errors?.['email']">
-                L'adresse mail n'est pas valide.
-              </div>
+            <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
+            <input formControlName="nom" id="nom" type="text"
+                   class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+            <div *ngIf="userForm.controls['nom'].invalid && userForm.controls['nom'].touched"
+                 class="text-red-500 text-sm mt-1">
+              <div *ngIf="userForm.controls['nom'].errors?.['required']">Ce champ est requis.</div>
             </div>
           </div>
   
-          <!-- Mot de passe -->
           <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">
-              Mot de passe
-            </label>
-            <input
-              formControlName="password"
-              id="password"
-              type="password"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="userForm.controls['password'].invalid && userForm.controls['password'].touched"
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="userForm.controls['password'].errors?.['required']">
-                Ce champ est requis.
-              </div>
-            </div>
-          </div>
-  
-          <!-- Nom et Prénom -->
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
-              <input
-                formControlName="nom"
-                id="nom"
-                type="text"
-                class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-              <div
-                *ngIf="userForm.controls['nom'].invalid && userForm.controls['nom'].touched"
-                class="text-red-500 text-sm mt-1"
-              >
-                <div *ngIf="userForm.controls['nom'].errors?.['required']">
-                  Ce champ est requis.
-                </div>
-              </div>
-            </div>
-            <div>
-              <label for="prenom" class="block text-sm font-medium text-gray-700">Prénom</label>
-              <input
-                formControlName="prenom"
-                id="prenom"
-                type="text"
-                class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              />
-              <div
-                *ngIf="userForm.controls['prenom'].invalid && userForm.controls['prenom'].touched"
-                class="text-red-500 text-sm mt-1"
-              >
-                <div *ngIf="userForm.controls['prenom'].errors?.['required']">
-                  Ce champ est requis.
-                </div>
-              </div>
-            </div>
-          </div>
-  
-          <!-- Téléphone -->
-          <div>
-            <label for="telephone" class="block text-sm font-medium text-gray-700">Téléphone</label>
-            <input
-              formControlName="telephone"
-              id="telephone"
-              type="text"
-              class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-            <div
-              *ngIf="userForm.controls['telephone'].invalid && userForm.controls['telephone'].touched"
-              class="text-red-500 text-sm mt-1"
-            >
-              <div *ngIf="userForm.controls['telephone'].errors?.['required']">
-                Ce champ est requis.
-              </div>
+            <label for="prenom" class="block text-sm font-medium text-gray-700">Prénom</label>
+            <input formControlName="prenom" id="prenom" type="text"
+                   class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+            <div *ngIf="userForm.controls['prenom'].invalid && userForm.controls['prenom'].touched"
+                 class="text-red-500 text-sm mt-1">
+              <div *ngIf="userForm.controls['prenom'].errors?.['required']">Ce champ est requis.</div>
             </div>
           </div>
         </div>
   
-        <!-- Bloc pour l'upload de photo de profil -->
-        <div class="mt-4 p-4 bg-gray-50 rounded-lg flex items-center space-x-4">
-            <!-- Bloc input & bouton -->
-            <div class="flex-1">
-              <label class="block text-sm font-medium text-gray-700 mb-1">Photo de profil</label>
-              <input
-                type="file"
-                (change)="onFileSelected($event)"
-                accept="image/*"
-                class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 
-                       file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 
-                       hover:file:bg-blue-100 transition-colors"
-              />
-              <button
-                (click)="saveProfilePicture()"
-                class="mt-3 inline-block px-4 py-2 rounded-lg border border-blue-500 text-blue-500 bg-blue-50
-                       font-semibold hover:bg-blue-100 transition duration-300"
-              >
-                Mettre à jour la photo de profil
-              </button>
-            </div>
-          
-            <!-- Bloc aperçu image -->
-            <div class="w-32 h-32 flex items-center justify-center">
-                <img
-                  *ngIf="previewUrl"
-                  [src]="previewUrl"
-                  alt="Aperçu photo de profil"
-                  class="rounded-full w-full h-full object-cover shadow-md"
-                />
-              </div>
+        <!-- Téléphone -->
+        <div>
+          <label for="telephone" class="block text-sm font-medium text-gray-700">Téléphone</label>
+          <input formControlName="telephone" id="telephone" type="text"
+                 class="mt-1 block w-full border border-gray-300 p-2 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+          <div *ngIf="userForm.controls['telephone'].invalid && userForm.controls['telephone'].touched"
+               class="text-red-500 text-sm mt-1">
+            <div *ngIf="userForm.controls['telephone'].errors?.['required']">Ce champ est requis.</div>
           </div>
+        </div>
+      </div>
   
-        <!-- Bouton ENREGISTRER -->
-        <button
-          type="submit"
-          class="mt-6 w-full px-4 py-2 rounded-lg border border-[#4AC99B] text-[#4AC99B] bg-[#E9F8F3] 
-                 font-semibold hover:bg-[#CDECE0] transition duration-300"
-        >
-          ENREGISTRER
+      <!-- Bloc pour l'upload de photo de profil -->
+      <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Photo de profil</label>
+  
+        <!-- Affichage de l'image actuelle ou preview -->
+        <div class="flex items-center space-x-4 mb-4" *ngIf="profilePicturePath || previewUrl">
+          <img [src]="previewUrl || profilePicturePath"
+               alt="Preview photo"
+               class="h-20 w-20 rounded-full object-cover border border-gray-300" />
+  
+          <!-- Bouton de suppression -->
+          <button type="button"
+                  (click)="deleteProfilePicture()"
+                  class="text-red-600 hover:underline text-sm">
+            Supprimer la photo
+          </button>
+        </div>
+  
+        <!-- Champ d'upload -->
+        <input type="file"
+               (change)="onFileSelected($event)"
+               accept="image/*"
+               class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 
+                      file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 
+                      hover:file:bg-blue-100 transition-colors" />
+  
+        <!-- Bouton d'enregistrement -->
+        <button (click)="saveProfilePicture()"
+                class="mt-3 inline-block px-4 py-2 rounded-lg border border-blue-500 text-blue-500 bg-blue-50
+                       font-semibold hover:bg-blue-100 transition duration-300">
+          Mettre à jour la photo de profil
         </button>
-      </form>
-    </div>
   
+        <!-- Bloc aperçu image (optionnel) -->
+        <div class="w-32 h-32 flex items-center justify-center mt-4" *ngIf="previewUrl && !profilePicturePath">
+          <img [src]="previewUrl"
+               alt="Aperçu photo de profil"
+               class="rounded-full w-full h-full object-cover shadow-md" />
+        </div>
+      </div>
+  
+      <!-- Bouton ENREGISTRER -->
+      <button type="submit"
+              class="mt-6 w-full px-4 py-2 rounded-lg border border-[#4AC99B] text-[#4AC99B] bg-[#E9F8F3] 
+                     font-semibold hover:bg-[#CDECE0] transition duration-300">
+        ENREGISTRER
+      </button>
+    </form>
+  </div>
+
     <!-- Onglet "Entreprise" -->
     <div *ngIf="activeTab === 'entreprise'" class="bg-white rounded-lg shadow-md p-6">
       <form [formGroup]="entrepriseForm" (ngSubmit)="saveInfoEntreprise()">

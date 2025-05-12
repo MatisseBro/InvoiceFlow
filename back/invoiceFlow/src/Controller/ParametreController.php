@@ -217,5 +217,23 @@ class ParametreController extends AbstractController
     }
     
 
+    #[Route('/delete-profile-picture', name: 'delete_profile_picture', methods: ['DELETE'])]
+    public function deleteProfilePicture(EntityManagerInterface $entityManager): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+    
+        if (!$user) {
+            return new JsonResponse(['error' => 'Not authenticated'], 401);
+        }
+    
+        // On remet le champ profilePicture à null sans toucher au fichier physique
+        $user->setProfilePicture(null);
+        $entityManager->persist($user);
+        $entityManager->flush();
+    
+        return new JsonResponse(['message' => 'Photo de profil supprimée en base (fichier non supprimé).']);
+    }
+
 
 }
