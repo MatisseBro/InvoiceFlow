@@ -1,0 +1,61 @@
+<div #pdfWrapper [ngClass]="theme" class="pdf-wrapper">
+    <!-- En-tête -->
+    <div class="header">
+      <h1>Invoice Flow</h1>
+      <p class="numero-facture"><strong>Facture N°:</strong> {{ data?.numeroFacture }}</p>
+    </div>
+  
+    <!-- Infos client -->
+    <div class="section client">
+      <h2>Client</h2>
+      <p><strong>Entreprise :</strong> {{ data?.clientInfos?.nomEntreprise }}</p>
+      <p><strong>Nom :</strong> {{ data?.clientInfos?.nom }} {{ data?.clientInfos?.prenom }}</p>
+      <p><strong>Adresse :</strong> {{ data?.clientInfos?.adresse }}, {{ data?.clientInfos?.codePostal }} {{ data?.clientInfos?.ville }}</p>
+      <p><strong>Email :</strong> {{ data?.clientInfos?.email }}</p>
+      <p><strong>SIRET :</strong> {{ data?.clientInfos?.numeroSiret }}</p>
+      <p><strong>TVA :</strong> {{ data?.clientInfos?.numeroTva }}</p>
+    </div>
+  
+    <!-- Tableau des produits -->
+    <div class="section produits">
+      <h2>Détails</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Qté</th>
+            <th>Unité</th>
+            <th>Prix HT</th>
+            <th>TVA</th>
+            <th>Prix TTC</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let produit of data?.produitsFacture">
+            <td>{{ produit.nom }}</td>
+            <td>{{ produit.quantite }}</td>
+            <td>{{ produit.unite || 'N/A' }}</td>
+            <td>{{ produit.prixHT }} €</td>
+            <td>{{ produit.tva }}%</td>
+            <td>{{ produit.prixTTC }} €</td>
+            <td>{{ produit.total }} €</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- Paiement & résumé -->
+    <div class="section recap">
+      <p><strong>Mode de paiement :</strong> {{ data?.modePaiement }}</p>
+      <p><strong>IBAN :</strong> {{ data?.iban }}</p>
+      <p><strong>SWIFT :</strong> {{ data?.swift }}</p>
+      <p><strong>Banque :</strong> {{ data?.bankName }}</p>
+  
+      <div class="totaux">
+        <p><strong>Sous-total :</strong> {{ data?.sousTotal }} €</p>
+        <p><strong>TVA :</strong> {{ data?.totalTVA }} €</p>
+        <p class="total"><strong>Total :</strong> {{ data?.total }} €</p>
+      </div>
+    </div>
+  </div>

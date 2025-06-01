@@ -17,6 +17,10 @@ export interface PRODUIT {
 }
 
 export interface CLIENT {
+  iban: string;
+  swift: string;
+  modePaiement: string;
+  bankName: string;
   id: number; // L'identifiant unique du client
   typeClient : string; // Le type de client
   referenceClient: number; // La référence du client

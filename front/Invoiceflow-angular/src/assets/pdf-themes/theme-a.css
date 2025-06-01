@@ -1,0 +1,85 @@
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 13px;
+    color: #333;
+    background: white;
+    margin: 40px;
+  }
+  
+  .pdf-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px;
+    border: 1px solid #eee;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  
+  .header h1 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #1e88e5;
+  }
+  
+  .numero-facture {
+    font-size: 14px;
+    color: #444;
+  }
+  
+  .section {
+    margin-bottom: 32px;
+  }
+  
+  .section h2 {
+    font-size: 18px;
+    color: #1e88e5;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 4px;
+  }
+  
+  .section p {
+    margin: 4px 0;
+  }
+  
+  .section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+  }
+  
+  .section table th,
+  .section table td {
+    padding: 10px 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+    font-size: 12px;
+  }
+  
+  .section table th {
+    background: #f5f7fa;
+    font-weight: bold;
+  }
+  
+  .totaux {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .totaux p {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 4px 0;
+  }
+  
+  .totaux .total {
+    color: #1e88e5;
+    font-size: 16px;
+  }

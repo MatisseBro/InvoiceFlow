@@ -1,0 +1,397 @@
+/* --- Thème A --- */
+.themeA {
+    position: relative;
+    background-color: #F4F7FE; /* Fond clair pastel */
+    padding: 2rem;
+    padding-top: 10rem; /* Laisser de l'espace en haut pour la wave */
+    border-radius: 14px;
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #333;
+  }
+  
+  /* L'effet wave en haut avec l'image BG.png */
+  .themeA::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px; /* Ajustez la hauteur selon votre image */
+    background: url('/BG.png') no-repeat center/cover;
+    z-index: -1;
+  }
+  
+  /* Pour le conteneur principal de la facture à l'intérieur */
+  .themeA > .bg-white {
+    position: relative;
+    z-index: 2;
+    background-color: #fff !important;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Titres et textes */
+  .themeA h1,
+  .themeA h2,
+  .themeA h3,
+  .themeA h4,
+  .themeA h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+  }
+  .themeA p,
+  .themeA label {
+    margin: 0.25rem 0;
+    color: #555;
+  }
+  .themeA .text-sm {
+    font-size: 0.875rem !important;
+    color: #666;
+  }
+  
+  /* Tableau des produits */
+  .themeA table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .themeA table thead {
+    background-color: #F0F3FE;
+    color: #333;
+    font-weight: 600;
+  }
+  .themeA table th,
+  .themeA table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+  }
+  .themeA table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Boutons */
+  .themeA button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .themeA button:hover {
+    filter: brightness(0.97);
+  }
+  
+  /* Bloc de récapitulatif (si vous utilisez une classe pour le fond bleu pastel)
+     Note : Dans Tailwind, la classe "bg-[#2388FF]" contient des crochets.
+     Pour la réutiliser dans du CSS, il faut l'échapper comme suit. */
+  .themeA .bg-\[\#2388FF\] {
+    background-color: #7269EF !important;
+    color: #fff !important;
+    border-radius: 10px;
+  }
+  .themeA .bg-\[\#2388FF\] .text-sm {
+    color: #fdfdfd;
+  }
+  .themeA .bg-\[\#2388FF\] .font-semibold {
+    font-weight: 600;
+  }
+  .themeA .bg-\[\#2388FF\] .text-lg {
+    font-size: 1.125rem;
+  }
+  
+  /* Pour les blocs d'arrière-plan pastel (ex. .bg-gray-50) */
+  .themeA .bg-gray-50 {
+    background-color: #F4F7FE !important;
+    border-radius: 10px;
+  }
+  
+  /* Style du footer PDF (si besoin) */
+  .themeA .pdf-footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    line-height: 1.4;
+  }
+
+  /* === Thème B === */
+.themeB {
+    /* On donne un fond dégradé léger */
+    position: relative;
+    background: linear-gradient(180deg, #EEF5FF 0%, #FFFFFF 60%);
+    /* Ajuste la répartition du dégradé (60% / 70% / etc.) */
+    
+    /* On laisse de la place en haut et en bas si nécessaire */
+    padding: 2rem;
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+    
+    /* Police par défaut */
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #333;
+  }
+  
+  /* 
+    Deux grands “disques” en coin pour rappeler la 
+    douceur / swirl du design de l'exemple 
+  */
+  .themeB::before,
+  .themeB::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1; /* Derrière le contenu */
+  }
+  
+  /* Un disque clair en haut à gauche */
+  .themeB::before {
+    width: 250px;
+    height: 250px;
+    top: 0;
+    left: 0;
+    background: radial-gradient(circle at top left, #dfefff, transparent 70%);
+  }
+  
+  /* Un disque clair en haut à droite */
+  .themeB::after {
+    width: 300px;
+    height: 300px;
+    top: -40px;
+    right: 0;
+    background: radial-gradient(circle at top right, #dbe9ff, transparent 60%);
+  }
+  
+  /* 
+    Le conteneur .bg-white de ta facture 
+    (celui qui encapsule la majeure partie du contenu)
+  */
+  .themeB > .bg-white {
+    position: relative;
+    z-index: 2;
+    background-color: #fff !important;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+  
+  /* Titres, textes */
+  .themeB h1,
+  .themeB h2,
+  .themeB h3,
+  .themeB h4,
+  .themeB h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+  }
+  .themeB p,
+  .themeB label {
+    margin: 0.25rem 0;
+    color: #555;
+  }
+  .themeB .text-sm {
+    font-size: 0.875rem !important;
+    color: #666;
+  }
+  
+  /* Tableau des produits */
+  .themeB table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .themeB table thead {
+    background-color: #f5f9ff; 
+    color: #333;
+    font-weight: 600;
+  }
+  .themeB table th,
+  .themeB table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+  }
+  .themeB table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Bloc de récap (ex: .bg-[#2388FF]) 
+     -> On peut lui donner un bleu plus clair ou plus soutenu, à toi de voir. */
+  .themeB .bg-\[\#2388FF\] {
+    background-color: #548CFF !important; /* Un bleu business plus soutenu */
+    color: #fff !important;
+    border-radius: 10px;
+  }
+  .themeB .bg-\[\#2388FF\] .text-sm {
+    color: #fdfdfd;
+  }
+  .themeB .bg-\[\#2388FF\] .font-semibold {
+    font-weight: 600;
+  }
+  .themeB .bg-\[\#2388FF\] .text-lg {
+    font-size: 1.125rem;
+  }
+  
+  /* Arrière-plan gris (ex. .bg-gray-50) */
+  .themeB .bg-gray-50 {
+    background-color: #f0f4fb !important;
+    border-radius: 8px;
+  }
+  
+  /* Boutons, hover */
+  .themeB button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .themeB button:hover {
+    filter: brightness(0.97);
+  }
+  
+  /* Footer ou disclaimers possibles */
+  .themeB .pdf-footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    line-height: 1.4;
+  }
+
+  /* === Thème C === */
+.themeC {
+    position: relative;
+    background: #fff; /* Fond global blanc */
+    color: #333;
+    font-family: 'Poppins', Arial, sans-serif;
+  
+    /* On se laisse un peu de marge autour */
+    padding: 2rem;
+    padding-top: 6rem; /* Laisser de l’espace pour le bloc bleu en haut */
+    border-radius: 14px;
+  }
+  
+  /* 
+     Un bloc bleu en pseudo-élément au sommet, 
+     arrondi en bas pour rappeler le design 
+  */
+  .themeC::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 220px; /* Ajuste la hauteur selon l’effet voulu */
+    background-color: #4C6FFF; /* Ou un bleu plus vif (#2388FF) */
+    z-index: -1;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+  
+  /* Le conteneur bg-white qui contient la facture */
+  .themeC > .bg-white {
+    position: relative;
+    z-index: 2;
+    background-color: #fff !important;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  }
+  
+  /* Titres / textes */
+  .themeC h1,
+  .themeC h2,
+  .themeC h3,
+  .themeC h4,
+  .themeC h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #333;
+  }
+  .themeC p,
+  .themeC label {
+    margin: 0.25rem 0;
+    color: #555;
+  }
+  .themeC .text-sm {
+    font-size: 0.875rem !important;
+    color: #666;
+  }
+  
+  /* Tableau des produits */
+  .themeC table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .themeC table thead {
+    background-color: #f5f7ff; 
+    color: #333;
+    font-weight: 600;
+  }
+  .themeC table th,
+  .themeC table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+  }
+  .themeC table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Bloc récap (ex: .bg-[#2388FF]) 
+     On peut le rendre plus clair ou au contraire plus vif */
+  .themeC .bg-\[\#2388FF\] {
+    background-color: #4C6FFF !important; 
+    color: #fff !important;
+    border-radius: 10px;
+  }
+  .themeC .bg-\[\#2388FF\] .text-sm {
+    color: #fdfdfd;
+  }
+  .themeC .bg-\[\#2388FF\] .font-semibold {
+    font-weight: 600;
+  }
+  .themeC .bg-\[\#2388FF\] .text-lg {
+    font-size: 1.125rem;
+  }
+  
+  /* Les blocs gris clair, si tu en utilises (.bg-gray-50) */
+  .themeC .bg-gray-50 {
+    background-color: #f3f6fe !important;
+    border-radius: 8px;
+  }
+  
+  /* Boutons / Hover */
+  .themeC button {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  .themeC button:hover {
+    filter: brightness(0.97);
+  }
+  
+  /* 
+     Footer ou disclaimers 
+     (si tu en ajoutes en bas de la page, par ex. .pdf-footer) 
+  */
+  .themeC .pdf-footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: #777;
+    line-height: 1.4;
+  }
