@@ -2,6 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\ClientController;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +15,32 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
+
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/client',
+            controller: ClientController::class . '::ajouterClient',
+        ),
+        new GetCollection(
+            uriTemplate: '/clients',
+            controller: ClientController::class . '::getClients',
+        ),
+        new Patch(
+            uriTemplate: '/edit-client/{id}',
+            controller: ClientController::class . '::editClient',
+        ),
+        new Delete(
+            uriTemplate: '/delete-client/{id}',
+            controller: ClientController::class . '::deleteClient',
+        ),
+        new GetCollection(
+            uriTemplate: '/client/{id}',
+            controller: ClientController::class . '::getClient',
+        ),
+    ]
+)]
+
 class Client
 {
     #[ORM\Id]

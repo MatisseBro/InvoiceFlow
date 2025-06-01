@@ -2,6 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\ProduitController;
 use App\Repository\ProduitsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +15,32 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitsRepository::class)]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/produit',
+            controller: ProduitController::class . '::ajouterProduit',
+            denormalizationContext: ['groups' => ['produit:write']],
+            normalizationContext: ['groups' => ['produit:read']],
+        ),
+        new GetCollection(
+            uriTemplate: '/produits',
+            controller: ProduitController::class . '::getProduits',
+        ),
+        new Patch(
+            uriTemplate: '/produit/{id}',
+            controller: ProduitController::class . '::editProduit',
+        ),
+        new Delete(
+            uriTemplate: '/produit/{id}',
+            controller: ProduitController::class . '::deleteProduit',
+        ),
+        new GetCollection(
+            uriTemplate: '/produit/{id}',
+            controller: ProduitController::class . '::getProduit',
+        ),
+    ]
+)]
 class Produits
 {
     #[ORM\Id]

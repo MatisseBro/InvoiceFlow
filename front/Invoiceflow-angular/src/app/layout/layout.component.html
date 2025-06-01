@@ -50,9 +50,20 @@
                     <!-- Conteneur focusable qui gère l'ouverture/fermeture du menu -->
                     <div class="relative" tabindex="0" (click)="toggleDropdown()" (blur)="closeDropdown()">
                         <!-- Bouton-avatar : adapte le src à l'image de ton utilisateur -->
-                        <button type="button" class="flex items-center focus:outline-none">
-                            <img class="h-8 w-8 rounded-full" [src]="profilePicture" alt="User Avatar" />
-                        </button>
+                        <!-- Bouton-avatar : image ou initiales -->
+<button type="button" class="flex items-center focus:outline-none">
+    <ng-container *ngIf="profilePicture; else initialsAvatar">
+      <img class="h-8 w-8 rounded-full object-cover" [src]="profilePicture" alt="User Avatar" />
+    </ng-container>
+  
+    <!-- Avatar avec initiales -->
+    <ng-template #initialsAvatar>
+      <div
+        class="h-8 w-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold text-sm uppercase">
+        {{ userInitial }}
+      </div>
+    </ng-template>
+  </button>
 
                         <!-- Dropdown : affiché lorsque dropdownOpen est true -->
                         <div *ngIf="dropdownOpen"

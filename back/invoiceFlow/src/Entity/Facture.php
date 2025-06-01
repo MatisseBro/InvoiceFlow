@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Controller\FactureController;
 use App\Repository\FactureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +12,16 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
+
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/factures/count',
+            controller: FactureController::class . '::count',
+        ),
+    ]
+)]
+
 class Facture
 {
     #[ORM\Id]

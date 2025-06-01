@@ -6,6 +6,8 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use App\Controller\ParametreController;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -16,7 +18,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations : [
         new GetCollection(normalizationContext: ['groups' => ['ListUser']]),
         new Patch(normalizationContext: ['groups' => ['UpdateUser']]),
-        ]
+        
+
+        new GetCollection(
+            uriTemplate: '/current-user',
+            controller:  ParametreController::class . '::currentUser',
+        ),
+
+        new Patch(
+            uriTemplate: '/save-info-user',
+            controller:  ParametreController::class . '::saveInfoUser',
+        ),
+
+        new Post(
+            uriTemplate: '/update-profile-picture',
+            controller:  ParametreController::class . '::updateProfilePicture',
+        ),
+
+        new Patch(
+            uriTemplate: '/save-info-entreprise',
+            controller:  ParametreController::class . '::saveInfoEntreprise',
+        )
+
+
+    ]
 )]
  
 #[Get(normalizationContext: ['groups' => ['GetUser']], security: "is_granted('ROLE_USER')")]

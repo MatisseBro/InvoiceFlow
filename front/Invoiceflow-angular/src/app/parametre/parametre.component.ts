@@ -23,6 +23,8 @@ export class ParametreComponent implements OnInit {
   // Variables pour la photo de profil
   selectedFile: File | null = null;
   previewUrl: string | ArrayBuffer | null = null;
+  profilePicturePath: string | null = null; // chemin serveur actuel
+  hasProfilePicture: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -67,14 +69,15 @@ export class ParametreComponent implements OnInit {
     this.apiService.getCurrentUser().subscribe({
       next: (data: any) => {
         console.log('User data:', data);
-        // Patch du formulaire utilisateur
+  
+        // Mise à jour des formulaires
         this.userForm.patchValue({
           email: data.email,
           nom: data.nom,
           prenom: data.prenom,
           telephone: data.telephone
         });
-        // Patch du formulaire entreprise s'il y a des données
+  
         if (data.entreprise) {
           this.entrepriseForm.patchValue({
             nomEntreprise: data.entreprise.nomEntreprise,
@@ -92,6 +95,12 @@ export class ParametreComponent implements OnInit {
             conditionReglement: data.entreprise.conditionReglement
           });
         }
+  
+        // ✅ Ici tu ajoutes la gestion de l'image de profil
+        this.profilePicturePath = data.profilePicture ? 'http://localhost:8001' + data.profilePicture : null;
+        this.hasProfilePicture = !!data.profilePicture;
+  
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Erreur lors du chargement du user', error);
@@ -99,6 +108,7 @@ export class ParametreComponent implements OnInit {
       }
     });
   }
+  
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
@@ -205,4 +215,22 @@ export class ParametreComponent implements OnInit {
       }
     });
   }
+
+  deleteProfilePicture(): void {
+    this.apiService.deleteProfilePicture().subscribe({
+      next: () => {
+        this.setSuccessMessage("Photo de profil supprimée.");
+        this.profilePicturePath = null;
+        this.hasProfilePicture = false;
+        this.selectedFile = null;
+        this.previewUrl = null;
+        this.cdr.markForCheck();
+      },
+      error: (err) => {
+        console.error('Erreur suppression photo', err);
+        this.setErrorMessage("Erreur lors de la suppression de la photo de profil.");
+      }
+    });
+  }
+  
 }
