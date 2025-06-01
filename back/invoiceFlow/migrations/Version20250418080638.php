@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250402113838 extends AbstractMigration
+final class Version20250418080638 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -37,8 +37,9 @@ final class Version20250402113838 extends AbstractMigration
         $this->addSql('ALTER TABLE produits_facture ADD CONSTRAINT FK_C714C6C9F347EFB FOREIGN KEY (produit_id) REFERENCES produits (id)');
         $this->addSql('ALTER TABLE produits_facture ADD CONSTRAINT FK_C714C6C97F2DEE08 FOREIGN KEY (facture_id) REFERENCES facture (id)');
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649A4AEAFEA FOREIGN KEY (entreprise_id) REFERENCES entreprise (id)');
+        $this->addSql('ALTER TABLE user ADD profile_picture VARCHAR(255) DEFAULT NULL');
     }
-
+ 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
@@ -59,5 +60,6 @@ final class Version20250402113838 extends AbstractMigration
         $this->addSql('DROP TABLE produits_devis');
         $this->addSql('DROP TABLE produits_facture');
         $this->addSql('DROP TABLE user');
+        $this->addSql('ALTER TABLE user DROP profile_picture');
     }
 }

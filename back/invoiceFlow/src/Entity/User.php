@@ -60,6 +60,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Entreprise $entreprise = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $profilePicture = null;
  
     public function getId(): ?int
     {
@@ -193,6 +196,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->entreprise = $entreprise;
 
+        return $this;
+    }
+
+    public function getProfilePicture(): ?string {
+        return $this->profilePicture;
+    }
+    
+    public function setProfilePicture(?string $profilePicture): self {
+        $this->profilePicture = $profilePicture;
         return $this;
     }
 }

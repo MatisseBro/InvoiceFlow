@@ -5,21 +5,44 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { FactureComponent } from './facture/facture.component';
 import { ClientComponent } from './client/client.component';
 import { RegisterComponent } from './components/register/register.component';
-import { AuthGuard } from './guard/auth.guard';
-
-// 🆕 Import du composant PDF
+import { AuthGuard } from './guard/auth.guard';  // Assurez-vous que le chemin correspond à l'emplacement de votre AuthGuard
+import { LayoutComponent } from './layout/layout.component';
+import { ParametreComponent } from './parametre/parametre.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { FacturePdfComponent } from './facture-pdf/facture-pdf.component';
 
 export const routes: Routes = [
-  { path: '', component: LandingPageComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  // Routes publiques pour l'authentification
+  {
+    path: 'auth',
+    children: [
+      { path: '', redirectTo: 'landing', pathMatch: 'full' },
+      { path : 'landing', component: LandingPageComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+   
+      { path: '**', redirectTo: 'login', pathMatch: 'full' }
+    ]
+  },
+  
+  // Routes protégées (layout avec outlet pour les routes enfants)
+  {
+    path: '',
+    component: LayoutComponent,
+    canActivate: [AuthGuard], 
+    children: [
+      // Définir une route par défaut pour le chemin vide
+      { path: '', redirectTo: 'produit', pathMatch: 'full' },
 
-  // Routes protégées
-  { path: 'produit', component: ProduitComponent, canActivate: [AuthGuard] },
-  { path: 'facture', component: FactureComponent, canActivate: [AuthGuard] },
-  { path: 'client', component: ClientComponent, canActivate: [AuthGuard] },
-
-  // 🆕 Route vers le rendu PDF
-  { path: 'facture-pdf', component: FacturePdfComponent, canActivate: [AuthGuard] }
+      { path: 'produit', component: ProduitComponent },
+      { path: 'facture', component: FactureComponent },
+      { path: 'client', component: ClientComponent },
+      { path : 'parametre', component : ParametreComponent },
+      { path: 'dashboard', component : DashboardComponent },
+      // 🆕 Route vers le rendu PDF
+      { path: 'facture-pdf', component: FacturePdfComponent},
+      // Une wildcard pour intercepter toute URL non prévue dans ce contexte
+      { path: '**', redirectTo: 'produit', pathMatch: 'full' }
+    ]
+  },
 ];

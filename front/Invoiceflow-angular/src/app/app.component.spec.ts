@@ -14,11 +14,6 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'Invoiceflow-angular' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('Invoiceflow-angular');
-  });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);

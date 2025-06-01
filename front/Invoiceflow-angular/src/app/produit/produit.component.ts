@@ -22,6 +22,11 @@ export class ProduitComponent implements OnInit {
   produit: PRODUIT | null = null;
   submitted: boolean = false;
 
+  // Variables pour afficher des alertes
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+  alertTimeout: any;
+
   constructor(
     private produitService: ProduitService,
     private fb: FormBuilder,
@@ -34,12 +39,12 @@ export class ProduitComponent implements OnInit {
 
     // Abonnement aux changements du champ de recherche
     this.searchControl.valueChanges.pipe(
-      debounceTime(300),          // Attendre 300 ms après la dernière frappe
-      distinctUntilChanged()      // Ne déclencher que si la valeur change réellement
+      debounceTime(300),
+      distinctUntilChanged()
     ).subscribe((searchTerm: string) => {
       console.log('[searchControl] Valeur saisie:', searchTerm);
       if (searchTerm && searchTerm.length >= 3) {
-        // Appel de la recherche côté serveur
+        // Recherche côté serveur
         this.produitService.searchProduits(searchTerm).subscribe({
           next: (data: PRODUIT[]) => {
             console.log('[searchProduits] Résultat:', data);
@@ -47,6 +52,7 @@ export class ProduitComponent implements OnInit {
           },
           error: (error) => {
             console.error('[searchProduits] Erreur lors de la recherche:', error);
+            this.setErrorMessage("Erreur lors de la recherche.");
           }
         });
       } else {
@@ -56,7 +62,7 @@ export class ProduitComponent implements OnInit {
     });
   }
 
-  initForm() {
+  initForm(): void {
     this.produitForm = this.fb.group({
       id: [null],
       nom: ['', Validators.required],
@@ -75,17 +81,16 @@ export class ProduitComponent implements OnInit {
     this.produitForm.get('tva')?.valueChanges.subscribe(() => this.calculerPrixHT());
   }
 
-  calculerPrixHT() {
+  calculerPrixHT(): void {
     const prixTTC = this.produitForm.get('prixTTC')?.value || 0;
     const tva = this.produitForm.get('tva')?.value || 0;
     if (tva > 0) {
       const prixHT = prixTTC / (1 + tva / 100);
-      // Mise à jour du champ en conservant deux décimales
       this.produitForm.patchValue({ prixHT: parseFloat(prixHT.toFixed(2)) });
-    }
+    } 
   }
 
-  loadProduits() {
+  loadProduits(): void {
     console.log('[loadProduits] Chargement des produits...');
     this.produitService.getProduits().subscribe({
       next: (data: PRODUIT[]) => {
@@ -94,14 +99,18 @@ export class ProduitComponent implements OnInit {
       },
       error: (error) => {
         console.error('[loadProduits] Erreur lors du chargement des produits:', error);
+        this.setErrorMessage("Erreur lors du chargement des produits.");
       }
     });
   }
 
-  ajouterProduit() {
+  ajouterProduit(): void {
     this.submitted = true;
-    if (!this.produitForm.valid) return;
-
+    if (!this.produitForm.valid) {
+      this.produitForm.markAllAsTouched();
+      this.setErrorMessage("Le formulaire produit est invalide.");
+      return;
+    }
     const formValues = this.produitForm.getRawValue();
     console.log('[ajouterProduit] Envoi du produit:', formValues);
 
@@ -111,14 +120,16 @@ export class ProduitComponent implements OnInit {
         this.produits = [...this.produits, produitAjoute];
         this.fermerModal();
         this.loadProduits();
+        this.setSuccessMessage("Produit ajouté avec succès.");
       },
       error: (error) => {
         console.error("[ajouterProduit] Erreur lors de l'ajout du produit:", error);
+        this.setErrorMessage("Erreur lors de l'ajout du produit.");
       }
     });
   }
 
-  modifierProduit() {
+  modifierProduit(): void {
     this.submitted = true;
     if (!this.produitForm.valid) {
       alert('Le formulaire est invalide.');
@@ -132,9 +143,11 @@ export class ProduitComponent implements OnInit {
         console.log('[modifierProduit] Produit modifié avec succès');
         this.fermerModal();
         this.loadProduits();
+        this.setSuccessMessage("Produit modifié avec succès.");
       },
       error: (err) => {
         console.error('[modifierProduit] Erreur lors de la modification du produit:', err);
+        this.setErrorMessage("Erreur lors de la modification du produit.");
       }
     });
   }
@@ -164,6 +177,7 @@ export class ProduitComponent implements OnInit {
       },
       error: (error) => {
         console.error('[ouvrirModalEdition] Erreur lors du chargement du produit:', error);
+        this.setErrorMessage("Erreur lors du chargement du produit.");
       }
     });
   }
@@ -175,9 +189,11 @@ export class ProduitComponent implements OnInit {
         next: () => {
           console.log('[deleteProduit] Produit supprimé');
           this.loadProduits();
+          this.setSuccessMessage("Produit supprimé avec succès.");
         },
         error: (err) => {
           console.error('[deleteProduit] Erreur lors de la suppression du produit:', err);
+          this.setErrorMessage("Erreur lors de la suppression du produit.");
         }
       });
     }
@@ -193,5 +209,38 @@ export class ProduitComponent implements OnInit {
     this.edit = false;
     this.produit = null;
     this.submitted = false;
+  }
+
+  // Gestion des alertes
+  setSuccessMessage(message: string): void {
+    this.successMessage = message;
+    this.errorMessage = null;
+    if (this.alertTimeout) {
+      clearTimeout(this.alertTimeout);
+    }
+    this.alertTimeout = setTimeout(() => {
+      this.successMessage = null;
+      this.cdr.markForCheck();
+    }, 5000);
+  }
+
+  setErrorMessage(message: string): void {
+    this.errorMessage = message;
+    this.successMessage = null;
+    if (this.alertTimeout) {
+      clearTimeout(this.alertTimeout);
+    }
+    this.alertTimeout = setTimeout(() => {
+      this.errorMessage = null;
+      this.cdr.markForCheck();
+    }, 5000);
+  }
+
+  closeAlert(): void {
+    this.successMessage = null;
+    this.errorMessage = null;
+    if (this.alertTimeout) {
+      clearTimeout(this.alertTimeout);
+    }
   }
 }
