@@ -15,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class LoginController extends AbstractController
 {
-
     #[Route('/register', name: "api_register", methods: ["POST"])]
     public function register(
         Request $request,
