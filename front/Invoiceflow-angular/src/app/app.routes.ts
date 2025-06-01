@@ -9,6 +9,7 @@ import { AuthGuard } from './guard/auth.guard';  // Assurez-vous que le chemin c
 import { LayoutComponent } from './layout/layout.component';
 import { ParametreComponent } from './parametre/parametre.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { FacturePdfComponent } from './facture-pdf/facture-pdf.component';
 
 export const routes: Routes = [
   // Routes publiques pour l'authentification
@@ -37,7 +38,9 @@ export const routes: Routes = [
       { path: 'facture', component: FactureComponent },
       { path: 'client', component: ClientComponent },
       { path : 'parametre', component : ParametreComponent },
-      { path: 'dashboard', component : DashboardComponent }, 
+      { path: 'dashboard', component : DashboardComponent },
+      // 🆕 Route vers le rendu PDF
+      { path: 'facture-pdf', component: FacturePdfComponent},
       // Une wildcard pour intercepter toute URL non prévue dans ce contexte
       { path: '**', redirectTo: 'produit', pathMatch: 'full' }
     ]
